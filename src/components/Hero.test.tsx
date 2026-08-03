@@ -48,7 +48,8 @@ describe("Hero", () => {
 
     const bg = instagram.querySelector("[data-icon-bg]");
     expect(bg).not.toBeNull();
-    expect(bg?.className).toEqual(expect.stringContaining("rounded-full"));
+    expect(bg?.className).toEqual(expect.stringContaining("rounded-l-full"));
     expect(bg?.className).toEqual(expect.stringContaining("transition-all"));
+    expect(bg?.className).toEqual(expect.stringContaining("right-6"));
   });
 });

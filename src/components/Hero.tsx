@@ -43,12 +43,12 @@ export function Hero() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label={label}
-            className="group relative flex h-12 w-12 items-center justify-center overflow-hidden rounded-full text-paper/90 transition-colors hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose"
+            className="group relative flex h-12 w-12 items-center justify-center text-paper/90 transition-colors hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose"
           >
             <span
               data-icon-bg
               aria-hidden="true"
-              className="absolute inset-y-0 left-0 w-0 rounded-full bg-rose-soft transition-all duration-300 ease-out group-hover:w-full group-focus-visible:w-full motion-reduce:transition-none"
+              className="absolute inset-y-0 -right-6 z-0 w-0 rounded-l-full bg-rose-soft transition-all duration-300 ease-out group-hover:w-[4.5rem] group-focus-visible:w-[4.5rem] motion-reduce:transition-none sm:-right-10 sm:group-hover:w-[5.5rem] sm:group-focus-visible:w-[5.5rem]"
             />
             <Icon aria-hidden="true" className="relative z-10 h-7 w-7" />
           </a>
