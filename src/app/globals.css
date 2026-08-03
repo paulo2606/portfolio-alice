@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+:root {
+  --color-blush: #fceef2;
+  --color-paper: #fffbfc;
+  --color-rose: #c1466b;
+  --color-rose-soft: #e7a9be;
+  --color-ink: #241417;
+}
+
+@theme inline {
+  --color-blush: var(--color-blush);
+  --color-paper: var(--color-paper);
+  --color-rose: var(--color-rose);
+  --color-rose-soft: var(--color-rose-soft);
+  --color-ink: var(--color-ink);
+  --font-display: var(--font-fraunces);
+  --font-body: var(--font-lora);
+}
+
+body {
+  background: var(--color-blush);
+  color: var(--color-ink);
+  font-family: var(--font-body), serif;
+}
