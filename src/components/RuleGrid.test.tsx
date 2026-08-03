@@ -13,4 +13,22 @@ describe("RuleGrid", () => {
     expect(container.querySelectorAll("[data-rule='horizontal']").length).toBeGreaterThan(0);
     expect(container.querySelectorAll("[data-rule='vertical']").length).toBeGreaterThan(0);
   });
+
+  it("desativa o parallax quando o usuario prefere reduced motion", () => {
+    const matchMediaSpy = jest.spyOn(window, "matchMedia").mockImplementation((query) => ({
+      matches: query === "(prefers-reduced-motion: reduce)",
+      media: query,
+      onchange: null,
+      addListener: () => {},
+      removeListener: () => {},
+      addEventListener: () => {},
+      removeEventListener: () => {},
+      dispatchEvent: () => false,
+    }));
+
+    const { container } = render(<RuleGrid />);
+    expect(container.firstElementChild).toHaveAttribute("data-reduced-motion", "true");
+
+    matchMediaSpy.mockRestore();
+  });
 });

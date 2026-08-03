@@ -1,23 +1,51 @@
 "use client";
 
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const HORIZONTAL_LINES = 5;
 const VERTICAL_LINES = 6;
 
+function getPrefersReducedMotion() {
+  if (typeof window === "undefined") return false;
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
+function usePrefersReducedMotion() {
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(getPrefersReducedMotion);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    function handleChange(event: MediaQueryListEvent) {
+      setPrefersReducedMotion(event.matches);
+    }
+
+    mediaQuery.addEventListener("change", handleChange);
+    return () => mediaQuery.removeEventListener("change", handleChange);
+  }, []);
+
+  return prefersReducedMotion;
+}
+
 export function RuleGrid() {
   const ref = useRef<HTMLDivElement>(null);
+  const prefersReducedMotion = usePrefersReducedMotion();
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"],
   });
-  const y = useTransform(scrollYProgress, [0, 1], ["-4%", "4%"]);
+  const y = useTransform(
+    scrollYProgress,
+    [0, 1],
+    prefersReducedMotion ? ["0%", "0%"] : ["-4%", "4%"]
+  );
 
   return (
     <div
       ref={ref}
       aria-hidden="true"
+      data-reduced-motion={prefersReducedMotion ? "true" : "false"}
       className="pointer-events-none absolute inset-0 overflow-hidden"
     >
       <motion.div className="absolute inset-0" style={{ y }}>
