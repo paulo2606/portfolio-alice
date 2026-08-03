@@ -1,3 +1,5 @@
+import { SOCIAL_LINKS } from "@/lib/social";
+
 export function Hero() {
   return (
     <section className="relative flex min-h-screen items-end overflow-hidden bg-ink text-paper">
@@ -11,6 +13,22 @@ export function Hero() {
         playsInline
       />
       <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/20 to-ink/10" />
+      <nav
+        aria-label="Redes sociais"
+        className="absolute right-6 top-6 z-10 flex gap-5 font-body text-sm sm:right-12 sm:top-8"
+      >
+        {SOCIAL_LINKS.map((social) => (
+          <a
+            key={social.href}
+            href={social.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-paper/90 underline decoration-rose-soft underline-offset-4 transition-colors hover:text-rose-soft focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose"
+          >
+            {social.label}
+          </a>
+        ))}
+      </nav>
       <div className="relative z-10 flex w-full flex-col gap-6 px-6 pb-16 sm:px-12 sm:pb-24">
         <p className="font-body text-sm uppercase tracking-[0.3em] text-rose-soft">
           storymaker

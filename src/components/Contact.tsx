@@ -3,8 +3,7 @@ import {
   WHATSAPP_PLACEHOLDER_NUMBER,
   buildWhatsAppLink,
 } from "@/lib/whatsapp";
-
-const INSTAGRAM_URL = "https://instagram.com/alicesantos";
+import { SOCIAL_LINKS } from "@/lib/social";
 
 export function Contact() {
   return (
@@ -33,14 +32,17 @@ export function Contact() {
       </ul>
 
       <div className="mt-12 flex items-center gap-6 font-body text-sm">
-        <a
-          href={INSTAGRAM_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="underline decoration-rose-soft underline-offset-4 hover:text-rose focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose"
-        >
-          Instagram
-        </a>
+        {SOCIAL_LINKS.map((social) => (
+          <a
+            key={social.href}
+            href={social.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline decoration-rose-soft underline-offset-4 hover:text-rose focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose"
+          >
+            {social.label}
+          </a>
+        ))}
       </div>
     </section>
   );

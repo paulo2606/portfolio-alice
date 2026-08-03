@@ -24,4 +24,12 @@ describe("Hero", () => {
     const cta = screen.getByRole("link", { name: /conhecer o trabalho|ver mais|descubra/i });
     expect(cta).toHaveAttribute("href", "#o-que-eu-faco");
   });
+
+  it("exibe as redes sociais no canto superior direito", () => {
+    render(<Hero />);
+    const instagram = screen.getByRole("link", { name: /instagram/i });
+    expect(instagram).toHaveAttribute("href", expect.stringContaining("instagram.com"));
+    expect(instagram).toHaveAttribute("target", "_blank");
+    expect(instagram.getAttribute("rel")).toEqual(expect.stringContaining("noopener"));
+  });
 });
