@@ -53,7 +53,7 @@ export function RuleGrid() {
           <div
             key={`h-${i}`}
             data-rule="horizontal"
-            className="absolute left-0 right-0 h-px bg-rose-soft/40"
+            className="absolute left-0 right-0 h-px bg-rose-soft/20"
             style={{ top: `${((i + 1) / (HORIZONTAL_LINES + 1)) * 100}%` }}
           />
         ))}
@@ -61,7 +61,7 @@ export function RuleGrid() {
           <div
             key={`v-${i}`}
             data-rule="vertical"
-            className="absolute top-0 bottom-0 w-px bg-rose-soft/40"
+            className="absolute top-0 bottom-0 w-px bg-rose-soft/20"
             style={{ left: `${((i + 1) / (VERTICAL_LINES + 1)) * 100}%` }}
           />
         ))}

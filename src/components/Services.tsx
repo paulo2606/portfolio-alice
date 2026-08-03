@@ -8,7 +8,7 @@ const SERVICES = [
 
 export function Services() {
   return (
-    <section id="o-que-eu-faco" className="relative px-6 py-24 sm:px-12">
+    <section id="o-que-eu-faco" className="relative py-24">
       <h2 className="font-display text-4xl italic text-rose sm:text-5xl">
         O que eu faço
       </h2>

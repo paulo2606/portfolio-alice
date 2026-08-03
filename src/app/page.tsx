@@ -9,7 +9,7 @@ export default function Page() {
   return (
     <main>
       <Hero />
-      <div className="relative">
+      <div className="relative mx-auto max-w-6xl px-6 sm:px-12 lg:px-20">
         <RuleGrid />
         <Services />
         <Projects />

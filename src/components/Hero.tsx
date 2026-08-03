@@ -4,13 +4,18 @@ import {
   WHATSAPP_PLACEHOLDER_NUMBER,
   buildWhatsAppLink,
 } from "@/lib/whatsapp";
-import { InstagramIcon, WhatsAppIcon } from "./icons";
+import { InstagramIcon, TikTokIcon, WhatsAppIcon } from "./icons";
 
 const HERO_ICON_LINKS = [
   {
     label: "Instagram",
     href: SOCIAL_LINKS.find((social) => social.label === "Instagram")?.href ?? "#",
     Icon: InstagramIcon,
+  },
+  {
+    label: "TikTok",
+    href: SOCIAL_LINKS.find((social) => social.label === "TikTok")?.href ?? "#",
+    Icon: TikTokIcon,
   },
   {
     label: "WhatsApp",

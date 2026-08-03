@@ -10,6 +10,15 @@ export function InstagramIcon(props: SVGProps<SVGSVGElement>) {
   );
 }
 
+export function TikTokIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
+      <path d="M16.5 2.5a4.5 4.5 0 0 1-4.5 4.5v2.6a7.1 7.1 0 0 0 7.1 7.1h1.4v-2.8a4.7 4.7 0 0 1-4 0V2.5h-.1Z" />
+      <path d="M9.9 9.7a5.7 5.7 0 0 0 5.7 5.7A5.7 5.7 0 0 0 21.3 9.7v1.5a4.2 4.2 0 0 1-4.2 4.2 4.2 4.2 0 0 1-4.2-4.2V3.4H9.9v6.3Z" opacity=".4" />
+    </svg>
+  );
+}
+
 export function WhatsAppIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" {...props}>

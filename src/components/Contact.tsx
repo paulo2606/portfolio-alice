@@ -7,7 +7,7 @@ import { SOCIAL_LINKS } from "@/lib/social";
 
 export function Contact() {
   return (
-    <section id="contato" className="relative px-6 py-24 sm:px-12">
+    <section id="contato" className="relative py-24">
       <h2 className="font-display text-4xl italic text-rose sm:text-5xl">
         Vamos criar sua próxima história?
       </h2>

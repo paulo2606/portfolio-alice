@@ -25,7 +25,7 @@ const DIFFERENTIALS = [
 
 export function WhyHireMe() {
   return (
-    <section id="por-que-me-contratar" className="relative px-6 py-24 sm:px-12">
+    <section id="por-que-me-contratar" className="relative py-24">
       <h2 className="font-display text-4xl italic text-rose sm:text-5xl">
         Por que me contratar
       </h2>

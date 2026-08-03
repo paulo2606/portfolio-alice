@@ -22,7 +22,7 @@ export function Projects() {
   const selectedProject = projects.find((project) => project.slug === selectedSlug) ?? null;
 
   return (
-    <section id="projetos" className="relative px-6 py-24 sm:px-12">
+    <section id="projetos" className="relative py-24">
       <h2 className="font-display text-4xl italic text-rose sm:text-5xl">Projetos</h2>
       <div className="mt-10">
         <ProjectsCarousel onSelect={handleSelect} />
