@@ -43,9 +43,14 @@ export function Hero() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label={label}
-            className="text-paper/90 transition-colors hover:text-rose-soft focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose"
+            className="group relative flex h-12 w-12 items-center justify-center overflow-hidden rounded-full text-paper/90 transition-colors hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose"
           >
-            <Icon aria-hidden="true" className="h-6 w-6" />
+            <span
+              data-icon-bg
+              aria-hidden="true"
+              className="absolute inset-y-0 left-0 w-0 rounded-full bg-rose-soft transition-all duration-300 ease-out group-hover:w-full group-focus-visible:w-full motion-reduce:transition-none"
+            />
+            <Icon aria-hidden="true" className="relative z-10 h-7 w-7" />
           </a>
         ))}
       </nav>

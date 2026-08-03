@@ -42,5 +42,13 @@ describe("Hero", () => {
 
     const nav = screen.getByRole("navigation", { name: /redes sociais/i });
     expect(nav.className).toEqual(expect.stringContaining("top-1/2"));
+
+    const icon = instagram.querySelector("svg");
+    expect(icon?.getAttribute("class")).toEqual(expect.stringContaining("h-7"));
+
+    const bg = instagram.querySelector("[data-icon-bg]");
+    expect(bg).not.toBeNull();
+    expect(bg?.className).toEqual(expect.stringContaining("rounded-full"));
+    expect(bg?.className).toEqual(expect.stringContaining("transition-all"));
   });
 });
