@@ -25,11 +25,22 @@ describe("Hero", () => {
     expect(cta).toHaveAttribute("href", "#o-que-eu-faco");
   });
 
-  it("exibe as redes sociais no canto superior direito", () => {
+  it("exibe icones de instagram e whatsapp centralizados na lateral direita", () => {
     render(<Hero />);
+
     const instagram = screen.getByRole("link", { name: /instagram/i });
     expect(instagram).toHaveAttribute("href", expect.stringContaining("instagram.com"));
     expect(instagram).toHaveAttribute("target", "_blank");
     expect(instagram.getAttribute("rel")).toEqual(expect.stringContaining("noopener"));
+    expect(instagram.querySelector("svg")).not.toBeNull();
+
+    const whatsapp = screen.getByRole("link", { name: /whatsapp/i });
+    expect(whatsapp).toHaveAttribute("href", expect.stringContaining("wa.me"));
+    expect(whatsapp).toHaveAttribute("target", "_blank");
+    expect(whatsapp.getAttribute("rel")).toEqual(expect.stringContaining("noopener"));
+    expect(whatsapp.querySelector("svg")).not.toBeNull();
+
+    const nav = screen.getByRole("navigation", { name: /redes sociais/i });
+    expect(nav.className).toEqual(expect.stringContaining("top-1/2"));
   });
 });

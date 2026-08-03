@@ -1,4 +1,23 @@
 import { SOCIAL_LINKS } from "@/lib/social";
+import {
+  WHATSAPP_DEFAULT_MESSAGE,
+  WHATSAPP_PLACEHOLDER_NUMBER,
+  buildWhatsAppLink,
+} from "@/lib/whatsapp";
+import { InstagramIcon, WhatsAppIcon } from "./icons";
+
+const HERO_ICON_LINKS = [
+  {
+    label: "Instagram",
+    href: SOCIAL_LINKS.find((social) => social.label === "Instagram")?.href ?? "#",
+    Icon: InstagramIcon,
+  },
+  {
+    label: "WhatsApp",
+    href: buildWhatsAppLink(WHATSAPP_PLACEHOLDER_NUMBER, WHATSAPP_DEFAULT_MESSAGE),
+    Icon: WhatsAppIcon,
+  },
+];
 
 export function Hero() {
   return (
@@ -15,17 +34,18 @@ export function Hero() {
       <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/20 to-ink/10" />
       <nav
         aria-label="Redes sociais"
-        className="absolute right-6 top-6 z-10 flex gap-5 font-body text-sm sm:right-12 sm:top-8"
+        className="absolute right-6 top-1/2 z-10 flex -translate-y-1/2 flex-col items-center gap-6 sm:right-10"
       >
-        {SOCIAL_LINKS.map((social) => (
+        {HERO_ICON_LINKS.map(({ label, href, Icon }) => (
           <a
-            key={social.href}
-            href={social.href}
+            key={label}
+            href={href}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-paper/90 underline decoration-rose-soft underline-offset-4 transition-colors hover:text-rose-soft focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose"
+            aria-label={label}
+            className="text-paper/90 transition-colors hover:text-rose-soft focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose"
           >
-            {social.label}
+            <Icon aria-hidden="true" className="h-6 w-6" />
           </a>
         ))}
       </nav>

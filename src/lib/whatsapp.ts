@@ -5,6 +5,9 @@ export function buildWhatsAppLink(phone: string, message: string): string {
   return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
 }
 
+export const WHATSAPP_DEFAULT_MESSAGE =
+  "Oi Alice! Vim pelo seu site e quero saber mais sobre o seu trabalho.";
+
 export interface WhatsAppMessageOption {
   label: string;
   message: string;
