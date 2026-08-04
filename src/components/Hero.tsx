@@ -66,6 +66,7 @@ export function Hero() {
 
   return (
     <section
+      id="topo"
       ref={sectionRef}
       className="relative flex min-h-screen items-end overflow-hidden bg-ink text-paper"
     >

@@ -18,6 +18,10 @@
   --font-body: var(--font-lora);
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background: var(--color-blush);
   color: var(--color-ink);

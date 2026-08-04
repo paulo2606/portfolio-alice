@@ -4,6 +4,7 @@ import { Services } from "@/components/Services";
 import { Contact } from "@/components/Contact";
 import { RuleGrid } from "@/components/RuleGrid";
 import { AboutMe } from "@/components/AboutMe";
+import { Footer } from "@/components/Footer";
 
 export default function Page() {
   return (
@@ -16,6 +17,7 @@ export default function Page() {
         <Services />
         <Contact />
       </div>
+      <Footer />
     </main>
   );
 }
