@@ -1,48 +1,89 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Projects } from "./Projects";
-import { projects } from "@/lib/projects";
-
-const firstProject = projects[0];
 
 describe("Projects", () => {
-  it("nao mostra o modal antes de um clique", () => {
+  it("tem o id que recebe o link do menu", () => {
+    const { container } = render(<Projects />);
+    expect(container.querySelector("#projetos")).toBeInTheDocument();
+  });
+
+  it("renderiza uma foto com nome para cada projeto do mosaico", () => {
+    render(<Projects />);
+    expect(screen.getByAltText(/casamento ao p(o|ô)r do sol/i)).toBeInTheDocument();
+    expect(screen.getByText(/casamento ao p(o|ô)r do sol/i)).toBeInTheDocument();
+    expect(screen.getByAltText(/anivers(a|á)rio de 15 anos/i)).toBeInTheDocument();
+    expect(screen.getByAltText(/documentário de marca/i)).toBeInTheDocument();
+  });
+
+  it("nao mostra o painel lateral antes de um clique", () => {
     render(<Projects />);
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 
-  it("abre o modal com o texto editorial do projeto ao clicar no card", async () => {
+  it("abre o painel com o player ao clicar no projeto de video", async () => {
     const user = userEvent.setup();
     render(<Projects />);
-    await user.click(screen.getByRole("button", { name: /passeio, os detalhes/i }));
+    await user.click(screen.getByRole("button", { name: /ver projeto: making of casamento/i }));
 
     const dialog = screen.getByRole("dialog");
     expect(dialog).toBeInTheDocument();
+    expect(within(dialog).getByText(/making of casamento/i)).toBeInTheDocument();
     expect(
-      screen.getByText(new RegExp(firstProject.description[0].slice(0, 20), "i"))
+      within(dialog).getByAltText(/alian(c|ç)as e buqu(e|ê) nas m(a|ã)os dos noivos/i)
     ).toBeInTheDocument();
   });
 
-  it("abre a visualizacao ampliada ao clicar numa miniatura do mosaico", async () => {
+  it("abre o painel so com foto de capa e galeria para projetos sem video", async () => {
     const user = userEvent.setup();
     render(<Projects />);
-    await user.click(screen.getByRole("button", { name: /passeio, os detalhes/i }));
-
-    const thumbnail = screen.getByRole("button", {
-      name: firstProject.gallery[1].alt,
-    });
-    await user.click(thumbnail);
-
-    expect(screen.getByTestId("lightbox-image")).toHaveAttribute(
-      "alt",
-      firstProject.gallery[1].alt
+    await user.click(
+      screen.getByRole("button", { name: /ver projeto: casamento ao p(o|ô)r do sol/i })
     );
+
+    const dialog = screen.getByRole("dialog");
+    expect(dialog).toBeInTheDocument();
+    expect(dialog.querySelector("video")).not.toBeInTheDocument();
+    expect(
+      within(dialog).getByAltText(/noivos de m(a|ã)os dadas ao entardecer/i)
+    ).toBeInTheDocument();
   });
 
-  it("fecha com Esc e devolve o foco ao card que abriu o modal", async () => {
+  it("as fotos da galeria comecam em preto e branco e ficam coloridas no hover", async () => {
     const user = userEvent.setup();
     render(<Projects />);
-    const trigger = screen.getByRole("button", { name: /passeio, os detalhes/i });
+    await user.click(screen.getByRole("button", { name: /ver projeto: making of casamento/i }));
+
+    const dialog = screen.getByRole("dialog");
+    const photo = within(dialog).getByAltText(
+      /alian(c|ç)as e buqu(e|ê) nas m(a|ã)os dos noivos/i
+    );
+    expect(photo).toHaveClass("grayscale");
+    expect(photo).toHaveClass("group-hover:grayscale-0");
+  });
+
+  it("amplia a foto da galeria ao clicar nela", async () => {
+    const user = userEvent.setup();
+    render(<Projects />);
+    await user.click(screen.getByRole("button", { name: /ver projeto: making of casamento/i }));
+
+    await user.click(
+      screen.getByRole("button", {
+        name: /ampliar foto: alian(c|ç)as e buqu(e|ê) nas m(a|ã)os dos noivos/i,
+      })
+    );
+
+    expect(
+      screen.getAllByAltText(/alian(c|ç)as e buqu(e|ê) nas m(a|ã)os dos noivos/i)
+    ).toHaveLength(2);
+  });
+
+  it("fecha o painel com Esc e devolve o foco ao card que abriu", async () => {
+    const user = userEvent.setup();
+    render(<Projects />);
+    const trigger = screen.getByRole("button", {
+      name: /ver projeto: making of casamento/i,
+    });
     await user.click(trigger);
 
     expect(screen.getByRole("dialog")).toBeInTheDocument();

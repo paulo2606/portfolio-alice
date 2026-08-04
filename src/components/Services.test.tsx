@@ -7,16 +7,19 @@ describe("Services", () => {
     expect(container.querySelector("#o-que-eu-faco")).toBeInTheDocument();
   });
 
-  it("lista as cinco frentes de atuacao", () => {
+  it("apresenta os cards das frentes de atuacao", () => {
     render(<Services />);
     expect(
-      screen.getByText(/planejamento e cria(c|ç)(a|ã)o de stories estrat(e|é)gicos/i)
+      screen.getByRole("heading", { name: /stories estrat(e|é)gicos/i })
     ).toBeInTheDocument();
-    expect(screen.getByText(/design criativo/i)).toBeInTheDocument();
-    expect(screen.getByText(/gest(a|ã)o completa de stories/i)).toBeInTheDocument();
     expect(
-      screen.getByText(/cobertura de eventos com storytelling em tempo real/i)
+      screen.getByRole("heading", { name: /cobertura de eventos/i })
     ).toBeInTheDocument();
-    expect(screen.getByText(/making of/i)).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /making of/i })).toBeInTheDocument();
+  });
+
+  it("tem um cta para entrar em contato", () => {
+    render(<Services />);
+    expect(screen.getByRole("link", { name: /entrar em contato/i })).toBeInTheDocument();
   });
 });
