@@ -31,6 +31,14 @@ export function ProjectSidebar({ title, cover, video, gallery, onClose }: Projec
   }, []);
 
   useEffect(() => {
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, []);
+
+  useEffect(() => {
     const closeButton = dialogRef.current?.querySelector<HTMLButtonElement>(
       "[data-close-button]"
     );
@@ -146,6 +154,10 @@ export function ProjectSidebar({ title, cover, video, gallery, onClose }: Projec
                   </button>
                 ))}
               </div>
+              <p className="mt-4 font-body text-sm text-ink">
+                As fotos da galeria são capturas retiradas dos vídeos, não há serviço de
+                fotografia incluso.
+              </p>
             </>
           )}
         </div>

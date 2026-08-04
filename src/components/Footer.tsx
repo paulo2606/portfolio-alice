@@ -43,7 +43,7 @@ export function Footer() {
             </p>
             <h2 className="mt-2 font-display text-3xl italic sm:text-4xl">Alice Santos</h2>
             <p className="mt-4 max-w-xs font-body text-sm text-paper/70">
-              Conteúdo com alma, ritmo e presença — stories, cobertura de
+              Conteúdo com alma, ritmo e presença: stories, cobertura de
               eventos e making of.
             </p>
           </div>
