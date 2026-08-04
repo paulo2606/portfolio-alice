@@ -18,9 +18,9 @@ const SERVICE_CARDS = [
     video: "/video/hero_trimmed.mp4",
   },
   {
-    title: "Cobertura de eventos",
+    title: "Edição em até 1 hora",
     description:
-      "Edição em tempo real: em menos de 1 hora o vídeo já está no seu perfil, autêntico e no calor do momento.",
+      "Seu vídeo editado e pronto pra postar em até 1 hora depois do evento, com o clima e a energia do momento intactos.",
     video: "/video/hero.mp4",
   },
   {
