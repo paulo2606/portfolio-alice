@@ -1,11 +1,13 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import {
   WHATSAPP_MESSAGE_OPTIONS,
   WHATSAPP_PLACEHOLDER_NUMBER,
   buildWhatsAppLink,
 } from "@/lib/whatsapp";
+import { Reveal } from "./Reveal";
 import { VideoModal } from "./VideoModal";
 
 const SERVICE_CARDS = [
@@ -34,6 +36,7 @@ export function Services() {
     null
   );
   const triggerRef = useRef<HTMLElement | null>(null);
+  const prefersReducedMotion = useReducedMotion();
 
   function handleOpen(service: (typeof SERVICE_CARDS)[number]) {
     triggerRef.current = document.activeElement as HTMLElement;
@@ -47,17 +50,27 @@ export function Services() {
 
   return (
     <section id="servicos" className="relative py-24">
-      <div className="inline-flex items-center gap-3 text-sm uppercase tracking-[0.3em] text-rose-soft">
-        <span className="block h-1.5 w-1.5 rounded-full bg-rose" />
-        Diferenciais
-      </div>
-      <h2 className="mt-4 font-display text-4xl italic text-rose sm:text-5xl">
-        Meu diferencial
-      </h2>
+      <Reveal>
+        <div className="inline-flex items-center gap-3 text-sm uppercase tracking-[0.3em] text-rose-soft">
+          <span className="block h-1.5 w-1.5 rounded-full bg-rose" />
+          Diferenciais
+        </div>
+      </Reveal>
+      <Reveal delay={0.1}>
+        <h2 className="mt-4 font-display text-4xl italic text-rose sm:text-5xl">
+          Meu diferencial
+        </h2>
+      </Reveal>
 
       <ul className="mt-12 grid gap-6 sm:grid-cols-3">
-        {SERVICE_CARDS.map((service) => (
-          <li key={service.title}>
+        {SERVICE_CARDS.map((service, index) => (
+          <motion.li
+            key={service.title}
+            initial={prefersReducedMotion ? undefined : { opacity: 0, y: 32 }}
+            whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.6, delay: index * 0.12, ease: [0.22, 1, 0.36, 1] }}
+          >
             <button
               type="button"
               onClick={() => handleOpen(service)}
@@ -86,7 +99,7 @@ export function Services() {
                 </p>
               </div>
             </button>
-          </li>
+          </motion.li>
         ))}
       </ul>
 

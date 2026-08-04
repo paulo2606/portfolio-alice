@@ -3,13 +3,13 @@
 import { useState } from "react";
 import Image from "next/image";
 import {
-  WHATSAPP_DEFAULT_MESSAGE,
   WHATSAPP_MESSAGE_OPTIONS,
   WHATSAPP_PLACEHOLDER_NUMBER,
   buildWhatsAppLink,
 } from "@/lib/whatsapp";
 import { SOCIAL_LINKS } from "@/lib/social";
-import { InstagramIcon, TikTokIcon } from "./icons";
+import { InstagramIcon, PaperPlaneIcon, TikTokIcon } from "./icons";
+import { Reveal } from "./Reveal";
 
 const SOCIAL_ICONS = {
   Instagram: InstagramIcon,
@@ -17,12 +17,12 @@ const SOCIAL_ICONS = {
 };
 
 export function Contact() {
-  const [message, setMessage] = useState(WHATSAPP_DEFAULT_MESSAGE);
+  const [message, setMessage] = useState(WHATSAPP_MESSAGE_OPTIONS[0].message);
 
   return (
     <section id="contato" className="relative py-24">
       <div className="grid gap-10 md:grid-cols-2">
-        <div className="flex flex-col items-center text-center">
+        <Reveal x={-30} y={0} className="flex flex-col items-center text-center">
           <h2 className="font-display text-4xl italic text-rose sm:text-5xl">
             Vamos criar sua próxima história?
           </h2>
@@ -44,9 +44,9 @@ export function Contact() {
               className="animate-float-shadow -mt-2 h-4 w-32 rounded-full bg-ink/40 blur-xl sm:w-40"
             />
           </div>
-        </div>
+        </Reveal>
 
-        <div>
+        <Reveal x={30} y={0} delay={0.15}>
           <ul className="flex flex-wrap gap-3">
             {WHATSAPP_MESSAGE_OPTIONS.map((option) => (
               <li key={option.label}>
@@ -78,9 +78,13 @@ export function Contact() {
               target="_blank"
               rel="noopener noreferrer"
               aria-disabled={message.trim().length === 0}
-              className="mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-rose px-8 py-4 font-body text-base text-paper transition-colors hover:bg-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose aria-disabled:pointer-events-none aria-disabled:opacity-50"
+              className="group mt-4 flex w-full items-center justify-center gap-2 overflow-hidden rounded-full bg-rose px-8 py-4 font-body text-base text-paper transition-colors hover:bg-[#a83a5c] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose aria-disabled:pointer-events-none aria-disabled:opacity-50"
             >
-              Enviar no WhatsApp
+              <span>Enviar no WhatsApp</span>
+              <PaperPlaneIcon
+                aria-hidden="true"
+                className="h-7 w-7 shrink-0 -translate-x-4 opacity-0 transition-all duration-[400ms] ease-out group-hover:translate-x-0 group-hover:opacity-100"
+              />
             </a>
 
             <div className="mt-4 flex w-full gap-3">
@@ -101,7 +105,7 @@ export function Contact() {
               })}
             </div>
           </div>
-        </div>
+        </Reveal>
       </div>
     </section>
   );

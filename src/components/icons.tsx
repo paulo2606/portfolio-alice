@@ -18,6 +18,15 @@ export function TikTokIcon(props: SVGProps<SVGSVGElement>) {
   );
 }
 
+export function PaperPlaneIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
+      <path d="M22 12 L2 4 L8 12 L2 20 Z" />
+      <path d="M22 12 L8 12" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 export function WhatsAppIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" {...props}>

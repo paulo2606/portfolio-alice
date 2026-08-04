@@ -15,16 +15,15 @@ export interface WhatsAppMessageOption {
 
 export const WHATSAPP_MESSAGE_OPTIONS: WhatsAppMessageOption[] = [
   {
-    label: "Cobrir meu casamento",
-    message: "Oi Alice! Quero saber mais sobre a cobertura de stories para o meu casamento.",
+    label: "Saber mais sobre o trabalho",
+    message: "Oi Alice! Quero saber mais sobre o seu trabalho.",
   },
   {
-    label: "Cobrir meu evento",
-    message:
-      "Oi Alice! Tenho um evento chegando (chá, revelação, aniversário) e quero contratar a cobertura de stories.",
+    label: "Fazer um evento",
+    message: "Oi Alice! Quero fazer um evento e gostaria de saber mais sobre a cobertura de stories.",
   },
   {
-    label: "Gestão de stories do meu perfil",
-    message: "Oi Alice! Quero conversar sobre a gestão completa de stories para o meu Instagram.",
+    label: "Gestão de stories",
+    message: "Oi Alice, quero conversar sobre a gestão de stories para o meu perfil.",
   },
 ];

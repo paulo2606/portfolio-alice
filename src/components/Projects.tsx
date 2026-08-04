@@ -2,7 +2,9 @@
 
 import { useRef, useState } from "react";
 import Image from "next/image";
+import { motion, useReducedMotion } from "framer-motion";
 import { ProjectSidebar, type ProjectGalleryImage } from "./ProjectSidebar";
+import { Reveal } from "./Reveal";
 
 interface GalleryItem {
   name: string;
@@ -309,6 +311,7 @@ const GALLERY: GalleryItem[] = [
 export function Projects() {
   const [openItem, setOpenItem] = useState<GalleryItem | null>(null);
   const triggerRef = useRef<HTMLElement | null>(null);
+  const prefersReducedMotion = useReducedMotion();
 
   function handleOpen(item: GalleryItem) {
     triggerRef.current = document.activeElement as HTMLElement;
@@ -323,23 +326,31 @@ export function Projects() {
   return (
     <section id="o-que-eu-faco" className="relative py-24">
       <div className="mx-auto max-w-6xl px-6 sm:px-12 lg:px-20">
-        <div className="inline-flex items-center gap-3 text-sm uppercase tracking-[0.3em] text-rose-soft">
-          <span className="block h-1.5 w-1.5 rounded-full bg-rose" />
-          Portfólio
-        </div>
-        <h2 className="mt-4 font-display text-4xl italic text-rose sm:text-5xl">
-          O que faço
-        </h2>
+        <Reveal>
+          <div className="inline-flex items-center gap-3 text-sm uppercase tracking-[0.3em] text-rose-soft">
+            <span className="block h-1.5 w-1.5 rounded-full bg-rose" />
+            Portfólio
+          </div>
+        </Reveal>
+        <Reveal delay={0.1}>
+          <h2 className="mt-4 font-display text-4xl italic text-rose sm:text-5xl">
+            O que faço
+          </h2>
+        </Reveal>
       </div>
 
       <div className="relative left-1/2 mt-14 w-screen -translate-x-1/2">
         <div className="grid aspect-[1171/623] grid-cols-5 grid-rows-3 gap-1.5 sm:gap-2">
           {GALLERY.map((item, index) => (
-            <button
+            <motion.button
               key={item.name}
               type="button"
               onClick={() => handleOpen(item)}
               aria-label={`Ver projeto: ${item.name}`}
+              initial={prefersReducedMotion ? undefined : { opacity: 0, scale: 0.85 }}
+              whileInView={prefersReducedMotion ? undefined : { opacity: 1, scale: 1 }}
+              viewport={{ once: true, amount: 0.4 }}
+              transition={{ duration: 0.5, delay: index * 0.05, ease: [0.22, 1, 0.36, 1] }}
               className={`group relative overflow-hidden rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose ${item.area}`}
             >
               <Image
@@ -356,7 +367,7 @@ export function Projects() {
                   {item.name}
                 </span>
               </div>
-            </button>
+            </motion.button>
           ))}
         </div>
       </div>

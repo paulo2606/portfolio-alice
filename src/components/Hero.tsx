@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { SOCIAL_LINKS } from "@/lib/social";
 import {
   WHATSAPP_DEFAULT_MESSAGE,
@@ -29,6 +30,16 @@ const HERO_ICON_LINKS = [
 
 export function Hero() {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  const prefersReducedMotion = useReducedMotion();
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+  const videoY = useTransform(scrollYProgress, [0, 1], prefersReducedMotion ? ["0%", "0%"] : ["0%", "8%"]);
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
+  const contentY = useTransform(scrollYProgress, [0, 0.6], prefersReducedMotion ? [0, 0] : [0, 60]);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -54,10 +65,14 @@ export function Hero() {
   }, []);
 
   return (
-    <section className="relative flex min-h-screen items-end overflow-hidden bg-ink text-paper">
-      <video
+    <section
+      ref={sectionRef}
+      className="relative flex min-h-screen items-end overflow-hidden bg-ink text-paper"
+    >
+      <motion.video
         ref={videoRef}
-        className="absolute inset-0 h-full w-full object-cover"
+        style={{ y: videoY }}
+        className="absolute inset-0 h-full w-full scale-110 object-cover"
         src="/video/hero.mp4"
         poster="/video/hero-poster.jpg"
         autoPlay
@@ -89,7 +104,10 @@ export function Hero() {
           </a>
         ))}
       </nav>
-      <div className="relative z-10 flex w-full flex-col gap-6 px-6 pb-16 sm:px-12 sm:pb-24">
+      <motion.div
+        style={{ opacity: contentOpacity, y: contentY }}
+        className="relative z-10 flex w-full flex-col gap-6 px-6 pb-16 sm:px-12 sm:pb-24"
+      >
         <p className="font-body text-sm uppercase tracking-[0.3em] text-rose-soft">
           storymaker
         </p>
@@ -102,7 +120,7 @@ export function Hero() {
         >
           Conhecer o trabalho
         </a>
-      </div>
+      </motion.div>
     </section>
   );
 }
