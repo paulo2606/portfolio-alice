@@ -72,7 +72,7 @@ export function Services() {
         </h2>
       </Reveal>
 
-      <ul className="mt-12 grid gap-6 sm:grid-cols-3">
+      <ul className="mt-12 grid gap-6 min-[800px]:grid-cols-3">
         {SERVICE_CARDS.map((service, index) => (
           <motion.li
             key={service.title}

@@ -353,12 +353,12 @@ export function Projects() {
           quality={90}
           className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
         />
-        <div className="absolute inset-0 flex items-center justify-center bg-ink/50 p-3 sm:hidden">
+        <div className="absolute inset-0 flex items-center justify-center bg-ink/50 p-3 min-[1080px]:hidden">
           <span className="px-2 text-center font-display text-base italic text-paper">
             {item.name}
           </span>
         </div>
-        <div className="absolute inset-0 hidden items-center justify-center bg-ink/0 opacity-0 transition-all duration-300 ease-out group-hover:bg-ink/60 group-hover:opacity-100 sm:flex">
+        <div className="absolute inset-0 hidden items-center justify-center bg-ink/0 opacity-0 transition-all duration-300 ease-out group-hover:bg-ink/60 group-hover:opacity-100 min-[1080px]:flex">
           <span className="px-4 text-center font-display text-2xl italic text-paper">
             {item.name}
           </span>
@@ -383,16 +383,16 @@ export function Projects() {
         </Reveal>
       </div>
 
-      <div className="relative left-1/2 mt-14 w-screen -translate-x-1/2 px-4 sm:px-0">
+      <div className="relative left-1/2 mt-14 w-screen -translate-x-1/2 px-4 min-[1080px]:px-0">
         <div
           data-testid="mobile-mosaic"
-          className="grid aspect-[4/5] grid-cols-2 grid-rows-4 gap-1.5 sm:hidden"
+          className="grid aspect-[4/5] grid-cols-2 grid-rows-4 gap-1.5 min-[1080px]:hidden"
         >
           {MOBILE_GALLERY.map((item, index) => renderTile(item, index, item.mobileArea!))}
         </div>
         <div
           data-testid="desktop-mosaic"
-          className="hidden aspect-[1171/623] grid-cols-5 grid-rows-3 gap-2 sm:grid"
+          className="hidden aspect-[1171/623] grid-cols-5 grid-rows-3 gap-2 min-[1080px]:grid"
         >
           {GALLERY.map((item, index) => renderTile(item, index, item.area))}
         </div>
