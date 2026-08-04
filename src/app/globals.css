@@ -1,7 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --color-blush: #fceef2;
+  --color-blush: #fff5f8;
+  --color-blush-soft: #fde9ee;
   --color-paper: #fffbfc;
   --color-rose: #c1466b;
   --color-rose-soft: #e7a9be;
@@ -10,6 +11,7 @@
 
 @theme inline {
   --color-blush: var(--color-blush);
+  --color-blush-soft: var(--color-blush-soft);
   --color-paper: var(--color-paper);
   --color-rose: var(--color-rose);
   --color-rose-soft: var(--color-rose-soft);
@@ -76,6 +78,19 @@ body {
 
 .animate-float-shadow {
   animation: float-shadow 5s ease-in-out infinite;
+}
+
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 30s linear infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {

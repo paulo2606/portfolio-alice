@@ -1,6 +1,6 @@
 import {
   WHATSAPP_DEFAULT_MESSAGE,
-  WHATSAPP_PLACEHOLDER_NUMBER,
+  WHATSAPP_NUMBER,
   buildWhatsAppLink,
 } from "@/lib/whatsapp";
 import { CONTACT_EMAIL, SOCIAL_LINKS } from "@/lib/social";
@@ -20,7 +20,7 @@ const FOOTER_ICON_LINKS = [
   },
   {
     label: "WhatsApp",
-    href: buildWhatsAppLink(WHATSAPP_PLACEHOLDER_NUMBER, WHATSAPP_DEFAULT_MESSAGE),
+    href: buildWhatsAppLink(WHATSAPP_NUMBER, WHATSAPP_DEFAULT_MESSAGE),
     Icon: WhatsAppIcon,
   },
   {

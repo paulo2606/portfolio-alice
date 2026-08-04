@@ -4,7 +4,7 @@ import { useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import {
   WHATSAPP_MESSAGE_OPTIONS,
-  WHATSAPP_PLACEHOLDER_NUMBER,
+  WHATSAPP_NUMBER,
   buildWhatsAppLink,
 } from "@/lib/whatsapp";
 import { Reveal } from "./Reveal";
@@ -104,7 +104,7 @@ export function Services() {
       </ul>
 
       <a
-        href={buildWhatsAppLink(WHATSAPP_PLACEHOLDER_NUMBER, WHATSAPP_MESSAGE_OPTIONS[0].message)}
+        href={buildWhatsAppLink(WHATSAPP_NUMBER, WHATSAPP_MESSAGE_OPTIONS[0].message)}
         target="_blank"
         rel="noopener noreferrer"
         className="hidden"

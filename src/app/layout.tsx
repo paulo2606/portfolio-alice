@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Fraunces, Lora } from "next/font/google";
+import { PageBlobs } from "@/components/PageBlobs";
 import "./globals.css";
 
 const fraunces = Fraunces({
@@ -31,7 +32,8 @@ export default function RootLayout({
       lang="pt-BR"
       className={`${fraunces.variable} ${lora.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-blush text-ink">
+      <body className="relative min-h-full flex flex-col bg-blush text-ink">
+        <PageBlobs />
         {children}
       </body>
     </html>

@@ -4,7 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import {
   WHATSAPP_MESSAGE_OPTIONS,
-  WHATSAPP_PLACEHOLDER_NUMBER,
+  WHATSAPP_NUMBER,
   buildWhatsAppLink,
 } from "@/lib/whatsapp";
 import { SOCIAL_LINKS } from "@/lib/social";
@@ -74,7 +74,7 @@ export function Contact() {
               className="w-full resize-none rounded-md border border-rose-soft/40 bg-paper/60 p-4 font-body text-sm text-ink placeholder:text-ink/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose"
             />
             <a
-              href={buildWhatsAppLink(WHATSAPP_PLACEHOLDER_NUMBER, message)}
+              href={buildWhatsAppLink(WHATSAPP_NUMBER, message)}
               target="_blank"
               rel="noopener noreferrer"
               aria-disabled={message.trim().length === 0}

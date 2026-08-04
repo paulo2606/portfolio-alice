@@ -4,9 +4,11 @@ export interface SocialLink {
 }
 
 export const SOCIAL_LINKS: SocialLink[] = [
-  { label: "Instagram", href: "https://instagram.com/alicesantos" },
-  { label: "TikTok", href: "https://www.tiktok.com/@alicesantos" },
+  {
+    label: "Instagram",
+    href: "https://www.instagram.com/alicesantosfilms?igsh=N3F3czk2bnVmaHI3&utm_source=qr",
+  },
+  { label: "TikTok", href: "https://www.tiktok.com/@alicesantosfilms?_r=1&_t=ZS-98bYzpELsbY" },
 ];
 
-// e-mail placeholder: troque pelo e-mail real de contato da Alice antes de publicar
-export const CONTACT_EMAIL = "contato@alicesantos.com";
+export const CONTACT_EMAIL = "alicesa1004@gmail.com";

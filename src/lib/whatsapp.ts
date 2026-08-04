@@ -1,5 +1,4 @@
-// numero placeholder: troque pelo numero real de contato da Alice antes de publicar
-export const WHATSAPP_PLACEHOLDER_NUMBER = "5500000000000";
+export const WHATSAPP_NUMBER = "5541991931061";
 
 export function buildWhatsAppLink(phone: string, message: string): string {
   return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;

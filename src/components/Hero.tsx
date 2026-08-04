@@ -5,7 +5,7 @@ import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion
 import { SOCIAL_LINKS } from "@/lib/social";
 import {
   WHATSAPP_DEFAULT_MESSAGE,
-  WHATSAPP_PLACEHOLDER_NUMBER,
+  WHATSAPP_NUMBER,
   buildWhatsAppLink,
 } from "@/lib/whatsapp";
 import { InstagramIcon, TikTokIcon, WhatsAppIcon } from "./icons";
@@ -23,7 +23,7 @@ const HERO_ICON_LINKS = [
   },
   {
     label: "WhatsApp",
-    href: buildWhatsAppLink(WHATSAPP_PLACEHOLDER_NUMBER, WHATSAPP_DEFAULT_MESSAGE),
+    href: buildWhatsAppLink(WHATSAPP_NUMBER, WHATSAPP_DEFAULT_MESSAGE),
     Icon: WhatsAppIcon,
   },
 ];

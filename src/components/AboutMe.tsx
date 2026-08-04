@@ -22,7 +22,7 @@ export function AboutMe() {
   return (
     <section id="sobre-mim" className="relative py-24">
       <div className="relative grid items-center gap-8 md:grid-cols-[1.2fr_0.8fr]">
-        <div ref={imageWrapRef} className="flex h-full items-center justify-center overflow-hidden">
+        <div ref={imageWrapRef} className="flex h-full items-center justify-center">
           <Reveal x={-40} y={0}>
             <motion.div style={{ y: imageY }}>
               <Image
