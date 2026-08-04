@@ -47,62 +47,64 @@ export function Contact() {
         </Reveal>
 
         <Reveal x={30} y={0} delay={0.15}>
-          <ul className="flex flex-wrap gap-3">
-            {WHATSAPP_MESSAGE_OPTIONS.map((option) => (
-              <li key={option.label}>
-                <button
-                  type="button"
-                  onClick={() => setMessage(option.message)}
-                  className={`inline-flex items-center gap-2 rounded-full border px-5 py-2.5 font-body text-sm transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose ${
-                    message === option.message
-                      ? "border-rose bg-rose text-paper"
-                      : "border-rose-soft/40 text-ink hover:border-rose-soft hover:bg-blush"
-                  }`}
-                >
-                  {option.label}
-                </button>
-              </li>
-            ))}
-          </ul>
-
-          <div className="mt-6">
-            <textarea
-              value={message}
-              onChange={(event) => setMessage(event.target.value)}
-              rows={3}
-              aria-label="Mensagem para o WhatsApp"
-              className="w-full resize-none rounded-md border border-rose-soft/40 bg-paper/60 p-4 font-body text-sm text-ink placeholder:text-ink/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose"
-            />
-            <a
-              href={buildWhatsAppLink(WHATSAPP_NUMBER, message)}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-disabled={message.trim().length === 0}
-              className="group mt-4 flex w-full items-center justify-center gap-2 overflow-hidden rounded-full bg-rose px-8 py-4 font-body text-base text-paper transition-colors hover:bg-[#a83a5c] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose aria-disabled:pointer-events-none aria-disabled:opacity-50"
-            >
-              <span>Enviar no WhatsApp</span>
-              <PaperPlaneIcon
-                aria-hidden="true"
-                className="h-7 w-7 shrink-0 -translate-x-4 opacity-0 transition-all duration-[400ms] ease-out group-hover:translate-x-0 group-hover:opacity-100"
-              />
-            </a>
-
-            <div className="mt-4 flex w-full gap-3">
-              {SOCIAL_LINKS.map((social) => {
-                const Icon = SOCIAL_ICONS[social.label as keyof typeof SOCIAL_ICONS];
-                return (
-                  <a
-                    key={social.href}
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={social.label}
-                    className="flex flex-1 items-center justify-center gap-2 rounded-full border border-rose-soft/40 py-4 text-ink transition-colors hover:border-rose hover:text-rose focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose"
+          <div className="rotate-1 rounded-sm border border-rose-soft bg-paper p-4 pb-8 shadow-[0_25px_50px_-20px_rgba(36,20,23,0.35)] transition-transform duration-500 hover:rotate-0 sm:p-6 sm:pb-12">
+            <ul className="flex flex-wrap gap-3">
+              {WHATSAPP_MESSAGE_OPTIONS.map((option) => (
+                <li key={option.label}>
+                  <button
+                    type="button"
+                    onClick={() => setMessage(option.message)}
+                    className={`inline-flex items-center gap-2 rounded-full border-2 px-5 py-2.5 font-body text-sm transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose ${
+                      message === option.message
+                        ? "border-rose bg-rose text-paper"
+                        : "border-rose-soft text-ink hover:border-rose hover:bg-blush"
+                    }`}
                   >
-                    {Icon ? <Icon aria-hidden="true" className="h-5 w-5" /> : social.label}
-                  </a>
-                );
-              })}
+                    {option.label}
+                  </button>
+                </li>
+              ))}
+            </ul>
+
+            <div className="mt-6">
+              <textarea
+                value={message}
+                onChange={(event) => setMessage(event.target.value)}
+                rows={3}
+                aria-label="Mensagem para o WhatsApp"
+                className="w-full resize-none rounded-md border-2 border-rose-soft bg-blush/60 p-4 font-body text-sm text-ink placeholder:text-ink/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose"
+              />
+              <a
+                href={buildWhatsAppLink(WHATSAPP_NUMBER, message)}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-disabled={message.trim().length === 0}
+                className="group mt-4 flex w-full items-center justify-center gap-2 overflow-hidden rounded-full bg-rose px-8 py-4 font-body text-base text-paper transition-colors hover:bg-[#a83a5c] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose aria-disabled:pointer-events-none aria-disabled:opacity-50"
+              >
+                <span>Enviar no WhatsApp</span>
+                <PaperPlaneIcon
+                  aria-hidden="true"
+                  className="h-7 w-7 shrink-0 -translate-x-4 opacity-0 transition-all duration-[400ms] ease-out group-hover:translate-x-0 group-hover:opacity-100"
+                />
+              </a>
+
+              <div className="mt-4 flex w-full gap-3">
+                {SOCIAL_LINKS.map((social) => {
+                  const Icon = SOCIAL_ICONS[social.label as keyof typeof SOCIAL_ICONS];
+                  return (
+                    <a
+                      key={social.href}
+                      href={social.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={social.label}
+                      className="flex flex-1 items-center justify-center gap-2 rounded-full border-2 border-rose-soft py-4 text-ink transition-colors hover:border-rose hover:text-rose focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose"
+                    >
+                      {Icon ? <Icon aria-hidden="true" className="h-5 w-5" /> : social.label}
+                    </a>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </Reveal>
