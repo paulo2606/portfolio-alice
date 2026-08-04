@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useRef } from "react";
 import { SOCIAL_LINKS } from "@/lib/social";
 import {
   WHATSAPP_DEFAULT_MESSAGE,
@@ -25,9 +28,35 @@ const HERO_ICON_LINKS = [
 ];
 
 export function Hero() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    function resume() {
+      if (video?.paused) {
+        video.play().catch(() => {});
+      }
+    }
+
+    document.addEventListener("visibilitychange", resume);
+    video.addEventListener("pause", resume);
+    video.addEventListener("stalled", resume);
+    video.addEventListener("suspend", resume);
+
+    return () => {
+      document.removeEventListener("visibilitychange", resume);
+      video.removeEventListener("pause", resume);
+      video.removeEventListener("stalled", resume);
+      video.removeEventListener("suspend", resume);
+    };
+  }, []);
+
   return (
     <section className="relative flex min-h-screen items-end overflow-hidden bg-ink text-paper">
       <video
+        ref={videoRef}
         className="absolute inset-0 h-full w-full object-cover"
         src="/video/hero.mp4"
         poster="/video/hero-poster.jpg"
@@ -35,6 +64,7 @@ export function Hero() {
         loop
         muted
         playsInline
+        preload="auto"
       />
       <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/20 to-ink/10" />
       <nav

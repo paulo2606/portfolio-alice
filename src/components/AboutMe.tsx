@@ -10,7 +10,7 @@ export function AboutMe() {
             alt="Foto de Alice Santos"
             width={720}
             height={720}
-            className="h-[28rem] w-full rounded-[72%_28%_81%_19%/47%_55%_45%_53%] object-cover object-[center_15%] shadow-[0_30px_60px_-30px_rgba(36,20,23,0.45)] transition-[border-radius] duration-700 ease-out hover:rounded-[40%_60%_55%_45%/50%_45%_55%_50%] sm:h-[34rem]"
+            className="h-[28rem] w-full animate-blob object-cover object-[center_15%] shadow-[0_30px_60px_-30px_rgba(36,20,23,0.45)] sm:h-[34rem]"
             priority
           />
         </div>

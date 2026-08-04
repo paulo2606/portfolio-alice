@@ -321,14 +321,14 @@ export function Projects() {
   }
 
   return (
-    <section id="projetos" className="relative py-24">
+    <section id="o-que-eu-faco" className="relative py-24">
       <div className="mx-auto max-w-6xl px-6 sm:px-12 lg:px-20">
         <div className="inline-flex items-center gap-3 text-sm uppercase tracking-[0.3em] text-rose-soft">
           <span className="block h-1.5 w-1.5 rounded-full bg-rose" />
           Portfólio
         </div>
         <h2 className="mt-4 font-display text-4xl italic text-rose sm:text-5xl">
-          Projetos
+          O que faço
         </h2>
       </div>
 
@@ -340,7 +340,7 @@ export function Projects() {
               type="button"
               onClick={() => handleOpen(item)}
               aria-label={`Ver projeto: ${item.name}`}
-              className={`group relative overflow-hidden focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose ${item.area}`}
+              className={`group relative overflow-hidden rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose ${item.area}`}
             >
               <Image
                 src={item.image}

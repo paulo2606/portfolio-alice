@@ -3,9 +3,14 @@ import userEvent from "@testing-library/user-event";
 import { Projects } from "./Projects";
 
 describe("Projects", () => {
-  it("tem o id que recebe o link do menu", () => {
+  it("tem o id que recebe o cta do hero", () => {
     const { container } = render(<Projects />);
-    expect(container.querySelector("#projetos")).toBeInTheDocument();
+    expect(container.querySelector("#o-que-eu-faco")).toBeInTheDocument();
+  });
+
+  it("usa o titulo O que faço", () => {
+    render(<Projects />);
+    expect(screen.getByRole("heading", { name: /o que fa(c|ç)o/i })).toBeInTheDocument();
   });
 
   it("renderiza uma foto com nome para cada projeto do mosaico", () => {
