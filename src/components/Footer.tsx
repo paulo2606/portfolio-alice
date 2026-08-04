@@ -4,14 +4,8 @@ import {
   buildWhatsAppLink,
 } from "@/lib/whatsapp";
 import { CONTACT_EMAIL, SOCIAL_LINKS } from "@/lib/social";
+import { SECTION_LINKS } from "@/lib/sections";
 import { InstagramIcon, MailIcon, TikTokIcon, WhatsAppIcon } from "./icons";
-
-const FOOTER_LINKS = [
-  { label: "Sobre mim", href: "#sobre-mim" },
-  { label: "O que faço", href: "#o-que-eu-faco" },
-  { label: "Diferenciais", href: "#servicos" },
-  { label: "Contato", href: "#contato" },
-];
 
 const FOOTER_ICON_LINKS = [
   {
@@ -58,7 +52,7 @@ export function Footer() {
             <p className="font-body text-sm uppercase tracking-[0.3em] text-rose-soft">
               Navegação
             </p>
-            {FOOTER_LINKS.map((link) => (
+            {SECTION_LINKS.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
