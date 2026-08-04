@@ -2,6 +2,10 @@ import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Projects } from "./Projects";
 
+function getDesktopMosaic() {
+  return screen.getByTestId("desktop-mosaic");
+}
+
 describe("Projects", () => {
   it("tem o id que recebe o cta do hero", () => {
     const { container } = render(<Projects />);
@@ -15,10 +19,18 @@ describe("Projects", () => {
 
   it("renderiza uma foto com nome para cada projeto do mosaico", () => {
     render(<Projects />);
-    expect(screen.getByAltText(/casamento ao p(o|ô)r do sol/i)).toBeInTheDocument();
-    expect(screen.getByText(/casamento ao p(o|ô)r do sol/i)).toBeInTheDocument();
-    expect(screen.getByAltText(/anivers(a|á)rio de 15 anos/i)).toBeInTheDocument();
-    expect(screen.getByAltText(/documentário de marca/i)).toBeInTheDocument();
+    const desktop = getDesktopMosaic();
+    expect(within(desktop).getByAltText(/casamento ao p(o|ô)r do sol/i)).toBeInTheDocument();
+    expect(within(desktop).getAllByText(/casamento ao p(o|ô)r do sol/i).length).toBeGreaterThan(0);
+    expect(within(desktop).getByAltText(/anivers(a|á)rio de 15 anos/i)).toBeInTheDocument();
+    expect(within(desktop).getByAltText(/documentário de marca/i)).toBeInTheDocument();
+  });
+
+  it("renderiza um mosaico reduzido e proprio para mobile", () => {
+    render(<Projects />);
+    const mobile = screen.getByTestId("mobile-mosaic");
+    expect(within(mobile).queryByAltText(/documentário de marca/i)).not.toBeInTheDocument();
+    expect(within(mobile).getByAltText(/casamento ao p(o|ô)r do sol/i)).toBeInTheDocument();
   });
 
   it("nao mostra o painel lateral antes de um clique", () => {
@@ -29,7 +41,9 @@ describe("Projects", () => {
   it("abre o painel com o player ao clicar no projeto de video", async () => {
     const user = userEvent.setup();
     render(<Projects />);
-    await user.click(screen.getByRole("button", { name: /ver projeto: making of casamento/i }));
+    await user.click(
+      within(getDesktopMosaic()).getByRole("button", { name: /ver projeto: making of casamento/i })
+    );
 
     const dialog = screen.getByRole("dialog");
     expect(dialog).toBeInTheDocument();
@@ -43,7 +57,9 @@ describe("Projects", () => {
     const user = userEvent.setup();
     render(<Projects />);
     await user.click(
-      screen.getByRole("button", { name: /ver projeto: casamento ao p(o|ô)r do sol/i })
+      within(getDesktopMosaic()).getByRole("button", {
+        name: /ver projeto: casamento ao p(o|ô)r do sol/i,
+      })
     );
 
     const dialog = screen.getByRole("dialog");
@@ -57,7 +73,9 @@ describe("Projects", () => {
   it("as fotos da galeria comecam em preto e branco e ficam coloridas no hover", async () => {
     const user = userEvent.setup();
     render(<Projects />);
-    await user.click(screen.getByRole("button", { name: /ver projeto: making of casamento/i }));
+    await user.click(
+      within(getDesktopMosaic()).getByRole("button", { name: /ver projeto: making of casamento/i })
+    );
 
     const dialog = screen.getByRole("dialog");
     const photo = within(dialog).getByAltText(
@@ -70,7 +88,9 @@ describe("Projects", () => {
   it("amplia a foto da galeria ao clicar nela", async () => {
     const user = userEvent.setup();
     render(<Projects />);
-    await user.click(screen.getByRole("button", { name: /ver projeto: making of casamento/i }));
+    await user.click(
+      within(getDesktopMosaic()).getByRole("button", { name: /ver projeto: making of casamento/i })
+    );
 
     await user.click(
       screen.getByRole("button", {
@@ -86,7 +106,7 @@ describe("Projects", () => {
   it("fecha o painel com Esc e devolve o foco ao card que abriu", async () => {
     const user = userEvent.setup();
     render(<Projects />);
-    const trigger = screen.getByRole("button", {
+    const trigger = within(getDesktopMosaic()).getByRole("button", {
       name: /ver projeto: making of casamento/i,
     });
     await user.click(trigger);

@@ -75,7 +75,7 @@ export function Services() {
               type="button"
               onClick={() => handleOpen(service)}
               aria-label={`Ver vídeo: ${service.title}`}
-              className="group relative aspect-[3/4] w-full overflow-hidden rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose"
+              className="group relative aspect-[3/4] w-full cursor-pointer overflow-hidden rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose"
             >
               <video
                 className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"

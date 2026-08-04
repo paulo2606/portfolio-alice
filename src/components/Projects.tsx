@@ -10,6 +10,7 @@ interface GalleryItem {
   name: string;
   image: string;
   area: string;
+  mobileArea?: string;
   video?: string;
   gallery: ProjectGalleryImage[];
 }
@@ -254,6 +255,7 @@ const GALLERY: GalleryItem[] = [
     image:
       "https://images.unsplash.com/photo-1519741497674-611481863552?q=90&w=2400&auto=format&fit=crop",
     area: "col-start-1 row-start-1 row-span-2",
+    mobileArea: "col-start-1 row-start-1 row-span-2",
     gallery: PORDOSOL_GALLERY,
   },
   {
@@ -261,6 +263,7 @@ const GALLERY: GalleryItem[] = [
     image:
       "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?q=90&w=2400&auto=format&fit=crop",
     area: "col-start-2 col-span-2 row-start-1",
+    mobileArea: "col-start-2 row-start-1",
     gallery: ANIVERSARIO_GALLERY,
   },
   {
@@ -269,6 +272,7 @@ const GALLERY: GalleryItem[] = [
       "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?q=90&w=2400&auto=format&fit=crop",
     area: "col-start-4 col-span-2 row-start-1",
     video: "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4",
+    mobileArea: "col-start-2 row-start-2",
     gallery: MAKING_OF_GALLERY,
   },
   {
@@ -283,6 +287,7 @@ const GALLERY: GalleryItem[] = [
     image:
       "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=90&w=2400&auto=format&fit=crop",
     area: "col-start-4 row-start-2 row-span-2",
+    mobileArea: "col-start-1 row-start-3",
     gallery: CORPORATIVO_GALLERY,
   },
   {
@@ -290,6 +295,7 @@ const GALLERY: GalleryItem[] = [
     image:
       "https://images.unsplash.com/photo-1483985988355-763728e1935b?q=90&w=2400&auto=format&fit=crop",
     area: "col-start-5 row-start-2 row-span-2",
+    mobileArea: "col-start-2 row-start-3 row-span-2",
     gallery: EDITORIAL_GALLERY,
   },
   {
@@ -297,6 +303,7 @@ const GALLERY: GalleryItem[] = [
     image:
       "https://images.unsplash.com/photo-1464349153735-7db50ed83c84?q=90&w=2400&auto=format&fit=crop",
     area: "col-start-1 col-span-2 row-start-3",
+    mobileArea: "col-start-1 row-start-4",
     gallery: FESTA_INFANTIL_GALLERY,
   },
   {
@@ -307,6 +314,8 @@ const GALLERY: GalleryItem[] = [
     gallery: DOCUMENTARIO_GALLERY,
   },
 ];
+
+const MOBILE_GALLERY = GALLERY.filter((item) => item.mobileArea);
 
 export function Projects() {
   const [openItem, setOpenItem] = useState<GalleryItem | null>(null);
@@ -321,6 +330,42 @@ export function Projects() {
   function handleClose() {
     setOpenItem(null);
     triggerRef.current?.focus();
+  }
+
+  function renderTile(item: GalleryItem, index: number, area: string) {
+    return (
+      <motion.button
+        key={item.name}
+        type="button"
+        onClick={() => handleOpen(item)}
+        aria-label={`Ver projeto: ${item.name}`}
+        initial={prefersReducedMotion ? undefined : { opacity: 0, scale: 0.85 }}
+        whileInView={prefersReducedMotion ? undefined : { opacity: 1, scale: 1 }}
+        viewport={{ once: true, amount: 0.4 }}
+        transition={{ duration: 0.5, delay: index * 0.05, ease: [0.22, 1, 0.36, 1] }}
+        className={`group relative cursor-pointer overflow-hidden rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose ${area}`}
+      >
+        <Image
+          src={item.image}
+          alt={item.name}
+          fill
+          sizes="(max-width: 768px) 50vw, 20vw"
+          priority={index === 0}
+          quality={90}
+          className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+        />
+        <div className="absolute inset-0 flex items-center justify-center bg-ink/50 p-3 sm:hidden">
+          <span className="px-2 text-center font-display text-base italic text-paper">
+            {item.name}
+          </span>
+        </div>
+        <div className="absolute inset-0 hidden items-center justify-center bg-ink/0 opacity-0 transition-all duration-300 ease-out group-hover:bg-ink/60 group-hover:opacity-100 sm:flex">
+          <span className="px-4 text-center font-display text-2xl italic text-paper">
+            {item.name}
+          </span>
+        </div>
+      </motion.button>
+    );
   }
 
   return (
@@ -339,36 +384,18 @@ export function Projects() {
         </Reveal>
       </div>
 
-      <div className="relative left-1/2 mt-14 w-screen -translate-x-1/2">
-        <div className="grid aspect-[1171/623] grid-cols-5 grid-rows-3 gap-1.5 sm:gap-2">
-          {GALLERY.map((item, index) => (
-            <motion.button
-              key={item.name}
-              type="button"
-              onClick={() => handleOpen(item)}
-              aria-label={`Ver projeto: ${item.name}`}
-              initial={prefersReducedMotion ? undefined : { opacity: 0, scale: 0.85 }}
-              whileInView={prefersReducedMotion ? undefined : { opacity: 1, scale: 1 }}
-              viewport={{ once: true, amount: 0.4 }}
-              transition={{ duration: 0.5, delay: index * 0.05, ease: [0.22, 1, 0.36, 1] }}
-              className={`group relative overflow-hidden rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose ${item.area}`}
-            >
-              <Image
-                src={item.image}
-                alt={item.name}
-                fill
-                sizes="(max-width: 768px) 50vw, 20vw"
-                priority={index === 0}
-                quality={90}
-                className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-              />
-              <div className="absolute inset-0 flex items-center justify-center bg-ink/0 opacity-0 transition-all duration-300 ease-out group-hover:bg-ink/60 group-hover:opacity-100">
-                <span className="px-4 text-center font-display text-lg italic text-paper sm:text-2xl">
-                  {item.name}
-                </span>
-              </div>
-            </motion.button>
-          ))}
+      <div className="relative left-1/2 mt-14 w-screen -translate-x-1/2 px-4 sm:px-0">
+        <div
+          data-testid="mobile-mosaic"
+          className="grid aspect-[4/5] grid-cols-2 grid-rows-4 gap-1.5 sm:hidden"
+        >
+          {MOBILE_GALLERY.map((item, index) => renderTile(item, index, item.mobileArea!))}
+        </div>
+        <div
+          data-testid="desktop-mosaic"
+          className="hidden aspect-[1171/623] grid-cols-5 grid-rows-3 gap-2 sm:grid"
+        >
+          {GALLERY.map((item, index) => renderTile(item, index, item.area))}
         </div>
       </div>
 
