@@ -58,7 +58,7 @@ export function Contact() {
         </Reveal>
 
         <Reveal x={30} y={0} delay={0.15}>
-          <div className="transition-transform duration-500 sm:rotate-1 sm:rounded-sm sm:border sm:border-rose-soft sm:bg-paper sm:p-6 sm:pb-12 sm:shadow-[0_25px_50px_-20px_rgba(36,20,23,0.35)] sm:hover:rotate-0">
+          <div className="transition-transform duration-500 sm:rotate-1 sm:rounded-sm sm:border sm:border-rose-soft sm:bg-paper/50 sm:p-6 sm:pb-12 sm:shadow-[0_25px_50px_-20px_rgba(36,20,23,0.35)] sm:hover:rotate-0">
             <ul className="grid grid-cols-2 gap-3 sm:flex sm:flex-wrap">
               {WHATSAPP_MESSAGE_OPTIONS.map((option, index) => {
                 const optionClassName = `inline-flex w-full items-center justify-start gap-2 rounded-full border-2 px-5 py-2.5 font-body text-sm transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose sm:w-auto sm:justify-center ${
