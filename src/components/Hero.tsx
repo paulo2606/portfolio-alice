@@ -45,9 +45,20 @@ export function Hero() {
     const video = videoRef.current;
     if (!video) return;
 
+    function playVideo() {
+      try {
+        video?.play()?.catch(() => {});
+      } catch {
+        // ambientes sem suporte a play() (ex: jsdom em testes)
+      }
+    }
+
+    video.muted = true;
+    playVideo();
+
     function resume() {
       if (video?.paused) {
-        video.play().catch(() => {});
+        playVideo();
       }
     }
 
@@ -55,12 +66,16 @@ export function Hero() {
     video.addEventListener("pause", resume);
     video.addEventListener("stalled", resume);
     video.addEventListener("suspend", resume);
+    document.addEventListener("touchstart", resume, { once: true, passive: true });
+    document.addEventListener("click", resume, { once: true });
 
     return () => {
       document.removeEventListener("visibilitychange", resume);
       video.removeEventListener("pause", resume);
       video.removeEventListener("stalled", resume);
       video.removeEventListener("suspend", resume);
+      document.removeEventListener("touchstart", resume);
+      document.removeEventListener("click", resume);
     };
   }, []);
 

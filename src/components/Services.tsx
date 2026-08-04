@@ -48,6 +48,16 @@ export function Services() {
     triggerRef.current?.focus();
   }
 
+  function playVideo(video: HTMLVideoElement | null) {
+    if (!video) return;
+    video.muted = true;
+    try {
+      video.play()?.catch(() => {});
+    } catch {
+      // ambientes sem suporte a play() (ex: jsdom em testes)
+    }
+  }
+
   return (
     <section id="servicos" className="relative py-24">
       <Reveal>
@@ -78,6 +88,7 @@ export function Services() {
               className="group relative aspect-[3/4] w-full cursor-pointer overflow-hidden rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose"
             >
               <video
+                ref={playVideo}
                 className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                 src={service.video}
                 autoPlay
