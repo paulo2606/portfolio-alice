@@ -22,12 +22,14 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body {
   background: var(--color-blush);
   color: var(--color-ink);
   font-family: var(--font-body), serif;
+  overflow-x: hidden;
 }
 
 @keyframes blob {
