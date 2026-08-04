@@ -255,7 +255,7 @@ const GALLERY: GalleryItem[] = [
     image:
       "https://images.unsplash.com/photo-1519741497674-611481863552?q=90&w=2400&auto=format&fit=crop",
     area: "col-start-1 row-start-1 row-span-2",
-    mobileArea: "col-start-1 row-start-1 row-span-2",
+    mobileArea: "col-start-1 row-start-1 row-span-3",
     gallery: PORDOSOL_GALLERY,
   },
   {
@@ -287,7 +287,6 @@ const GALLERY: GalleryItem[] = [
     image:
       "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=90&w=2400&auto=format&fit=crop",
     area: "col-start-4 row-start-2 row-span-2",
-    mobileArea: "col-start-1 row-start-3",
     gallery: CORPORATIVO_GALLERY,
   },
   {

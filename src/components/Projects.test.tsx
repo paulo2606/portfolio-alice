@@ -29,7 +29,7 @@ describe("Projects", () => {
   it("renderiza um mosaico reduzido e proprio para mobile", () => {
     render(<Projects />);
     const mobile = screen.getByTestId("mobile-mosaic");
-    expect(within(mobile).queryByAltText(/documentário de marca/i)).not.toBeInTheDocument();
+    expect(within(mobile).queryByAltText(/ch(a|á) revela(c|ç)(a|ã)o/i)).not.toBeInTheDocument();
     expect(within(mobile).getByAltText(/casamento ao p(o|ô)r do sol/i)).toBeInTheDocument();
   });
 

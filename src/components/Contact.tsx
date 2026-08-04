@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import {
   WHATSAPP_MESSAGE_OPTIONS,
@@ -18,6 +18,17 @@ const SOCIAL_ICONS = {
 
 export function Contact() {
   const [message, setMessage] = useState(WHATSAPP_MESSAGE_OPTIONS[0].message);
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const query = window.matchMedia("(min-width: 640px)");
+    setIsDesktop(query.matches);
+    function handleChange(event: MediaQueryListEvent) {
+      setIsDesktop(event.matches);
+    }
+    query.addEventListener("change", handleChange);
+    return () => query.removeEventListener("change", handleChange);
+  }, []);
 
   return (
     <section id="contato" className="relative py-24">
@@ -49,44 +60,62 @@ export function Contact() {
         <Reveal x={30} y={0} delay={0.15}>
           <div className="transition-transform duration-500 sm:rotate-1 sm:rounded-sm sm:border sm:border-rose-soft sm:bg-paper sm:p-6 sm:pb-12 sm:shadow-[0_25px_50px_-20px_rgba(36,20,23,0.35)] sm:hover:rotate-0">
             <ul className="grid grid-cols-2 gap-3 sm:flex sm:flex-wrap">
-              {WHATSAPP_MESSAGE_OPTIONS.map((option, index) => (
-                <li key={option.label} className={index === 0 ? "col-span-2" : ""}>
-                  <button
-                    type="button"
-                    onClick={() => setMessage(option.message)}
-                    className={`inline-flex w-full items-center justify-start gap-2 rounded-full border-2 px-5 py-2.5 font-body text-sm transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose sm:w-auto sm:justify-center ${
-                      message === option.message
-                        ? "border-rose bg-rose text-paper"
-                        : "border-rose-soft text-ink hover:border-rose hover:bg-blush"
-                    }`}
-                  >
-                    {option.label}
-                  </button>
-                </li>
-              ))}
+              {WHATSAPP_MESSAGE_OPTIONS.map((option, index) => {
+                const optionClassName = `inline-flex w-full items-center justify-start gap-2 rounded-full border-2 px-5 py-2.5 font-body text-sm transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose sm:w-auto sm:justify-center ${
+                  message === option.message
+                    ? "border-rose bg-rose text-paper"
+                    : "border-rose-soft bg-paper/50 text-ink hover:border-rose hover:bg-blush sm:bg-transparent"
+                }`;
+
+                return (
+                  <li key={option.label} className={index === 0 ? "col-span-2" : ""}>
+                    {isDesktop ? (
+                      <button
+                        type="button"
+                        onClick={() => setMessage(option.message)}
+                        className={optionClassName}
+                      >
+                        {option.label}
+                      </button>
+                    ) : (
+                      <a
+                        href={buildWhatsAppLink(WHATSAPP_NUMBER, option.message)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={optionClassName}
+                      >
+                        {option.label}
+                        <PaperPlaneIcon aria-hidden="true" className="h-4 w-4 shrink-0" />
+                      </a>
+                    )}
+                  </li>
+                );
+              })}
             </ul>
 
-            <div className="mt-6">
-              <textarea
-                value={message}
-                onChange={(event) => setMessage(event.target.value)}
-                rows={3}
-                aria-label="Mensagem para o WhatsApp"
-                className="w-full resize-none rounded-md border-2 border-rose-soft bg-blush/60 p-4 font-body text-sm text-ink placeholder:text-ink/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose"
-              />
-              <a
-                href={buildWhatsAppLink(WHATSAPP_NUMBER, message)}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-disabled={message.trim().length === 0}
-                className="group mt-4 flex w-full items-center justify-center gap-2 overflow-hidden rounded-full bg-rose px-8 py-4 font-body text-base text-paper transition-colors hover:bg-[#a83a5c] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose aria-disabled:pointer-events-none aria-disabled:opacity-50"
-              >
-                <span>Enviar no WhatsApp</span>
-                <PaperPlaneIcon
-                  aria-hidden="true"
-                  className="h-7 w-7 shrink-0 -translate-x-4 opacity-0 transition-all duration-[400ms] ease-out group-hover:translate-x-0 group-hover:opacity-100"
+            <div className="mt-4 sm:mt-6">
+              <div className="hidden sm:block">
+                <textarea
+                  value={message}
+                  onChange={(event) => setMessage(event.target.value)}
+                  rows={3}
+                  aria-label="Mensagem para o WhatsApp"
+                  className="w-full resize-none rounded-md border-2 border-rose-soft bg-blush/60 p-4 font-body text-sm text-ink placeholder:text-ink/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose"
                 />
-              </a>
+                <a
+                  href={buildWhatsAppLink(WHATSAPP_NUMBER, message)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-disabled={message.trim().length === 0}
+                  className="group mt-4 flex w-full items-center justify-center gap-2 overflow-hidden rounded-full bg-rose px-8 py-4 font-body text-base text-paper transition-colors hover:bg-[#a83a5c] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose aria-disabled:pointer-events-none aria-disabled:opacity-50"
+                >
+                  <span>Enviar no WhatsApp</span>
+                  <PaperPlaneIcon
+                    aria-hidden="true"
+                    className="h-7 w-7 shrink-0 -translate-x-4 opacity-0 transition-all duration-[400ms] ease-out group-hover:translate-x-0 group-hover:opacity-100"
+                  />
+                </a>
+              </div>
 
               <div className="mt-4 flex w-full gap-3">
                 {SOCIAL_LINKS.map((social) => {
@@ -98,7 +127,7 @@ export function Contact() {
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={social.label}
-                      className="flex flex-1 items-center justify-center gap-2 rounded-full border-2 border-rose-soft py-4 text-ink transition-colors hover:border-rose hover:text-rose focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose"
+                      className="flex flex-1 items-center justify-center gap-2 rounded-full border-2 border-rose-soft bg-paper/50 py-4 text-ink transition-colors hover:border-rose hover:text-rose sm:bg-transparent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose"
                     >
                       {Icon ? <Icon aria-hidden="true" className="h-5 w-5" /> : social.label}
                     </a>
