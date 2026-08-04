@@ -12,19 +12,19 @@ const SERVICE_CARDS = [
   {
     title: "Stories estratégicos",
     description:
-      "Planejamento e edição de stories no ritmo certo, pensados pra prender atenção do primeiro ao último segundo.",
+      "Atenção aos mínimos detalhes, captando momentos únicos que fazem toda a diferença.",
     video: "/video/hero_trimmed.mp4",
   },
   {
     title: "Cobertura de eventos",
     description:
-      "Acompanho o evento do início ao fim e edito em tempo real, pra quem não estava lá sentir que estava.",
+      "Edição em tempo real: em menos de 1 hora o vídeo já está no seu perfil, autêntico e no calor do momento.",
     video: "/video/hero.mp4",
   },
   {
-    title: "Making of",
+    title: "Trends do momento",
     description:
-      "Os bastidores que ninguém mais viu: preparação, ensaios e os detalhes que dão contexto ao dia.",
+      "Criação de conteúdos baseados em trends do momento (TikTok, Reels, etc.)",
     video: "/video/hero_trimmed.mp4",
   },
 ];
@@ -49,10 +49,10 @@ export function Services() {
     <section id="servicos" className="relative py-24">
       <div className="inline-flex items-center gap-3 text-sm uppercase tracking-[0.3em] text-rose-soft">
         <span className="block h-1.5 w-1.5 rounded-full bg-rose" />
-        Serviços
+        Diferenciais
       </div>
       <h2 className="mt-4 font-display text-4xl italic text-rose sm:text-5xl">
-        Veja na prática
+        Meu diferencial
       </h2>
 
       <ul className="mt-12 grid gap-6 sm:grid-cols-3">
