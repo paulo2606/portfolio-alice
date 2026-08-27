@@ -63,6 +63,14 @@ export function AboutMe() {
               Aqui, cada projeto nasce pensado para encantar e conectar.
             </p>
           </Reveal>
+          <Reveal delay={0.5}>
+            <a
+              href="#contato"
+              className="inline-flex w-fit items-center gap-2 border-b border-rose-soft pb-1 font-body text-base transition-colors hover:text-rose focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose"
+            >
+              Vamos conversar sobre o seu evento?
+            </a>
+          </Reveal>
         </div>
       </div>
     </section>
