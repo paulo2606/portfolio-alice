@@ -1,22 +1,16 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
-
-export interface ProjectGalleryImage {
-  src: string;
-  alt: string;
-  area: string;
-}
+import type { ProjectVideo } from "@/lib/projects";
+import { VideoModal } from "./VideoModal";
 
 interface ProjectSidebarProps {
   title: string;
-  cover: { src: string; alt: string };
-  video?: string;
   category: string;
   summary: string;
   deliverables: string[];
-  gallery: ProjectGalleryImage[];
+  featured: ProjectVideo;
+  gallery: ProjectVideo[];
   onClose: () => void;
 }
 
@@ -25,17 +19,16 @@ const FOCUSABLE_SELECTOR =
 
 export function ProjectSidebar({
   title,
-  cover,
-  video,
   category,
   summary,
   deliverables,
+  featured,
   gallery,
   onClose,
 }: ProjectSidebarProps) {
   const dialogRef = useRef<HTMLDivElement>(null);
   const [entered, setEntered] = useState(false);
-  const [lightbox, setLightbox] = useState<ProjectGalleryImage | null>(null);
+  const [openVideo, setOpenVideo] = useState<{ title: string; video: ProjectVideo } | null>(null);
 
   useEffect(() => {
     const frame = requestAnimationFrame(() => setEntered(true));
@@ -61,8 +54,8 @@ export function ProjectSidebar({
     function handleKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
         event.stopPropagation();
-        if (lightbox) {
-          setLightbox(null);
+        if (openVideo) {
+          setOpenVideo(null);
         } else {
           onClose();
         }
@@ -89,7 +82,7 @@ export function ProjectSidebar({
 
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [lightbox, onClose]);
+  }, [openVideo, onClose]);
 
   return (
     <div
@@ -123,23 +116,16 @@ export function ProjectSidebar({
 
         <div className="p-6 sm:p-8">
           <div className="relative overflow-hidden rounded-[1.5rem] bg-ink shadow-[0_30px_60px_-30px_rgba(0,0,0,0.6)]">
-            {video ? (
-              <video src={video} controls autoPlay playsInline className="aspect-video w-full">
-                Seu navegador não suporta vídeo em HTML5.
-              </video>
-            ) : (
-              <div className="relative aspect-video w-full">
-                <Image
-                  src={cover.src}
-                  alt={cover.alt}
-                  fill
-                  sizes="(max-width: 640px) 100vw, 640px"
-                  quality={90}
-                  className="object-cover"
-                  priority
-                />
-              </div>
-            )}
+            <video
+              src={featured.src}
+              poster={featured.poster}
+              controls
+              autoPlay
+              playsInline
+              className="aspect-video w-full"
+            >
+              Seu navegador não suporta vídeo em HTML5.
+            </video>
           </div>
 
           <div className="mt-8">
@@ -160,68 +146,38 @@ export function ProjectSidebar({
             </ul>
           </div>
 
-          {gallery.length > 0 && (
-            <>
-              <h3 className="mt-10 font-display text-lg italic text-ink">
-                Galeria do projeto
-              </h3>
-              <div className="mt-4 grid aspect-[4/3] grid-cols-4 grid-rows-3 gap-1.5">
-                {gallery.map((image) => (
-                  <button
-                    key={image.src}
-                    type="button"
-                    onClick={() => setLightbox(image)}
-                    aria-label={`Ampliar foto: ${image.alt}`}
-                    className={`group relative overflow-hidden focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose ${image.area}`}
-                  >
-                    <Image
-                      src={image.src}
-                      alt={image.alt}
-                      fill
-                      sizes="(max-width: 640px) 50vw, 320px"
-                      className="object-cover grayscale transition-all duration-500 ease-out group-hover:scale-105 group-hover:grayscale-0"
-                    />
-                  </button>
-                ))}
-              </div>
-              <p className="mt-4 font-body text-sm text-ink">
-                As fotos da galeria são capturas retiradas dos vídeos, não há serviço de
-                fotografia incluso.
-              </p>
-            </>
-          )}
+          <h3 className="mt-10 font-display text-lg italic text-ink">Galeria do projeto</h3>
+          <div className="mt-4 grid grid-cols-3 gap-1.5">
+            {gallery.map((item, index) => (
+              <button
+                key={item.src}
+                type="button"
+                onClick={() =>
+                  setOpenVideo({ title: `${title} — vídeo ${index + 1}`, video: item })
+                }
+                aria-label={`Ver vídeo ${index + 1} de ${title}`}
+                className="group relative aspect-square overflow-hidden rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose"
+              >
+                <video
+                  src={item.src}
+                  poster={item.poster}
+                  muted
+                  playsInline
+                  preload="metadata"
+                  className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+                />
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
-      {lightbox && (
-        <div
-          className="fixed inset-0 z-[60] flex items-center justify-center bg-ink/90 p-6"
-          onClick={(event) => {
-            event.stopPropagation();
-            setLightbox(null);
-          }}
-        >
-          <button
-            type="button"
-            onClick={(event) => {
-              event.stopPropagation();
-              setLightbox(null);
-            }}
-            aria-label="Fechar visualização ampliada"
-            className="absolute right-6 top-6 font-body text-sm text-paper/80 hover:text-rose focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose"
-          >
-            Fechar ✕
-          </button>
-          <Image
-            src={lightbox.src}
-            alt={lightbox.alt}
-            width={1400}
-            height={1400}
-            quality={90}
-            className="max-h-full w-auto max-w-full object-contain"
-            onClick={(event) => event.stopPropagation()}
-          />
-        </div>
+      {openVideo && (
+        <VideoModal
+          title={openVideo.title}
+          video={openVideo.video.src}
+          onClose={() => setOpenVideo(null)}
+        />
       )}
     </div>
   );
