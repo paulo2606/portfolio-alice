@@ -12,6 +12,9 @@ interface GalleryItem {
   area: string;
   mobileArea?: string;
   video?: string;
+  category: string;
+  summary: string;
+  deliverables: string[];
   gallery: ProjectGalleryImage[];
 }
 
@@ -256,6 +259,14 @@ const GALLERY: GalleryItem[] = [
       "https://images.unsplash.com/photo-1519741497674-611481863552?q=90&w=2400&auto=format&fit=crop",
     area: "col-start-1 row-start-1 row-span-2",
     mobileArea: "col-start-1 row-start-1 row-span-3",
+    category: "Casamento",
+    summary:
+      "Cobertura completa da cerimônia e festa, com stories em tempo real para os convidados acompanharem cada momento.",
+    deliverables: [
+      "Stories editados durante o evento",
+      "Vídeo highlight entregue em até 24h",
+      "Making of dos bastidores",
+    ],
     gallery: PORDOSOL_GALLERY,
   },
   {
@@ -264,6 +275,14 @@ const GALLERY: GalleryItem[] = [
       "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?q=90&w=2400&auto=format&fit=crop",
     area: "col-start-2 col-span-2 row-start-1",
     mobileArea: "col-start-2 row-start-1",
+    category: "Aniversário",
+    summary:
+      "Registro do dia inteiro com foco na energia da festa e nos detalhes que os convidados vão querer reviver.",
+    deliverables: [
+      "Stories em tempo real",
+      "Reel de destaque para postar no mesmo dia",
+      "Fotos extraídas dos melhores momentos",
+    ],
     gallery: ANIVERSARIO_GALLERY,
   },
   {
@@ -273,6 +292,13 @@ const GALLERY: GalleryItem[] = [
     area: "col-start-4 col-span-2 row-start-1",
     video: "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4",
     mobileArea: "col-start-2 row-start-2",
+    category: "Making of",
+    summary: "Bastidores da preparação, do vestido ao último retoque, contados com ritmo e leveza.",
+    deliverables: [
+      "Vídeo de bastidores editado",
+      "Stories em tempo real",
+      "Trilha sonora personalizada",
+    ],
     gallery: MAKING_OF_GALLERY,
   },
   {
@@ -280,6 +306,14 @@ const GALLERY: GalleryItem[] = [
     image:
       "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?q=90&w=2400&auto=format&fit=crop",
     area: "col-start-2 col-span-2 row-start-2",
+    category: "Chá Revelação",
+    summary:
+      "Cobertura do momento da revelação com edição rápida para compartilhar a novidade ainda durante o evento.",
+    deliverables: [
+      "Vídeo do momento da revelação editado na hora",
+      "Stories em tempo real",
+      "Fotos do evento",
+    ],
     gallery: CHA_REVELACAO_GALLERY,
   },
   {
@@ -287,6 +321,14 @@ const GALLERY: GalleryItem[] = [
     image:
       "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=90&w=2400&auto=format&fit=crop",
     area: "col-start-4 row-start-2 row-span-2",
+    category: "Corporativo",
+    summary:
+      "Cobertura profissional de palestras, lançamentos e confraternizações, com entrega ágil para uso institucional.",
+    deliverables: [
+      "Vídeo institucional editado",
+      "Fotos para redes sociais da empresa",
+      "Stories em tempo real do evento",
+    ],
     gallery: CORPORATIVO_GALLERY,
   },
   {
@@ -295,6 +337,14 @@ const GALLERY: GalleryItem[] = [
       "https://images.unsplash.com/photo-1483985988355-763728e1935b?q=90&w=2400&auto=format&fit=crop",
     area: "col-start-5 row-start-2 row-span-2",
     mobileArea: "col-start-2 row-start-3 row-span-2",
+    category: "Editorial",
+    summary:
+      "Produção autoral com direção de arte, pensada para marcas e perfis que querem uma estética própria.",
+    deliverables: [
+      "Ensaio fotográfico e em vídeo",
+      "Direção de arte e styling",
+      "Conteúdo pronto para redes sociais",
+    ],
     gallery: EDITORIAL_GALLERY,
   },
   {
@@ -303,6 +353,14 @@ const GALLERY: GalleryItem[] = [
       "https://images.unsplash.com/photo-1464349153735-7db50ed83c84?q=90&w=2400&auto=format&fit=crop",
     area: "col-start-1 col-span-2 row-start-3",
     mobileArea: "col-start-1 row-start-4",
+    category: "Festa Infantil",
+    summary:
+      "Cobertura leve e espontânea, acompanhando as crianças e os detalhes da decoração sem interromper a festa.",
+    deliverables: [
+      "Stories em tempo real",
+      "Vídeo highlight da festa",
+      "Fotos dos convidados e da decoração",
+    ],
     gallery: FESTA_INFANTIL_GALLERY,
   },
   {
@@ -310,6 +368,10 @@ const GALLERY: GalleryItem[] = [
     image:
       "https://images.unsplash.com/photo-1478737270239-2f02b77fc618?q=90&w=2400&auto=format&fit=crop",
     area: "col-start-3 row-start-3",
+    category: "Documentário",
+    summary:
+      "Narrativa em vídeo sobre a história, o processo ou os bastidores de uma marca, com entrevistas e imagens do dia a dia.",
+    deliverables: ["Roteiro e entrevistas", "Captação e edição completa", "Versões curtas para redes sociais"],
     gallery: DOCUMENTARIO_GALLERY,
   },
 ];
@@ -403,6 +465,9 @@ export function Projects() {
           title={openItem.name}
           cover={{ src: openItem.image, alt: openItem.name }}
           video={openItem.video}
+          category={openItem.category}
+          summary={openItem.summary}
+          deliverables={openItem.deliverables}
           gallery={openItem.gallery}
           onClose={handleClose}
         />

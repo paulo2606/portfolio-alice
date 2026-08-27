@@ -53,6 +53,18 @@ describe("Projects", () => {
     ).toBeInTheDocument();
   });
 
+  it("mostra a categoria e os entregaveis do projeto no painel", async () => {
+    const user = userEvent.setup();
+    render(<Projects />);
+    await user.click(
+      within(getDesktopMosaic()).getByRole("button", { name: /ver projeto: making of casamento/i })
+    );
+
+    const dialog = screen.getByRole("dialog");
+    expect(within(dialog).getByText(/making of/i, { selector: "p" })).toBeInTheDocument();
+    expect(within(dialog).getByText(/v(i|í)deo de bastidores editado/i)).toBeInTheDocument();
+  });
+
   it("abre o painel so com foto de capa e galeria para projetos sem video", async () => {
     const user = userEvent.setup();
     render(<Projects />);
