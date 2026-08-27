@@ -25,6 +25,18 @@ describe("Hero", () => {
     expect(cta).toHaveAttribute("href", "#o-que-eu-faco");
   });
 
+  it("tem um cta direto para contratar, com mensagem de contratacao no whatsapp", () => {
+    render(<Hero />);
+    const cta = screen.getByRole("link", { name: /contratar/i });
+    expect(cta).toHaveAttribute("href", expect.stringContaining("wa.me"));
+    expect(cta).toHaveAttribute(
+      "href",
+      expect.stringContaining(encodeURIComponent("Quero fazer um evento"))
+    );
+    expect(cta).toHaveAttribute("target", "_blank");
+    expect(cta.getAttribute("rel")).toEqual(expect.stringContaining("noopener"));
+  });
+
   it("exibe icones de instagram e whatsapp centralizados na lateral direita", () => {
     render(<Hero />);
 

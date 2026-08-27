@@ -5,6 +5,7 @@ import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion
 import { SOCIAL_LINKS } from "@/lib/social";
 import {
   WHATSAPP_DEFAULT_MESSAGE,
+  WHATSAPP_MESSAGE_OPTIONS,
   WHATSAPP_NUMBER,
   buildWhatsAppLink,
 } from "@/lib/whatsapp";
@@ -130,12 +131,22 @@ export function Hero() {
         <h1 className="font-display text-5xl italic leading-tight sm:text-7xl">
           Alice Santos
         </h1>
-        <a
-          href="#o-que-eu-faco"
-          className="mt-4 inline-flex w-fit items-center gap-2 border-b border-rose-soft pb-1 font-body text-base transition-colors hover:text-rose focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose"
-        >
-          Conhecer o trabalho
-        </a>
+        <div className="mt-4 flex flex-wrap items-center gap-6">
+          <a
+            href="#o-que-eu-faco"
+            className="inline-flex w-fit items-center gap-2 border-b border-rose-soft pb-1 font-body text-base transition-colors hover:text-rose focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose"
+          >
+            Conhecer o trabalho
+          </a>
+          <a
+            href={buildWhatsAppLink(WHATSAPP_NUMBER, WHATSAPP_MESSAGE_OPTIONS[1].message)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex w-fit items-center gap-2 rounded-full bg-rose px-6 py-3 font-body text-sm text-paper transition-colors hover:bg-[#a83a5c] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose"
+          >
+            Quero contratar
+          </a>
+        </div>
       </motion.div>
     </section>
   );
