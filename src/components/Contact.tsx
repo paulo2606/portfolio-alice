@@ -6,6 +6,7 @@ import {
   WHATSAPP_MESSAGE_OPTIONS,
   WHATSAPP_NUMBER,
   buildWhatsAppLink,
+  composeInquiryMessage,
 } from "@/lib/whatsapp";
 import { SOCIAL_LINKS } from "@/lib/social";
 import { InstagramIcon, PaperPlaneIcon, TikTokIcon } from "./icons";
@@ -19,6 +20,8 @@ const SOCIAL_ICONS = {
 export function Contact() {
   const [message, setMessage] = useState(WHATSAPP_MESSAGE_OPTIONS[0].message);
   const [isDesktop, setIsDesktop] = useState(false);
+  const [eventType, setEventType] = useState("");
+  const [eventDate, setEventDate] = useState("");
 
   useEffect(() => {
     const query = window.matchMedia("(min-width: 640px)");
@@ -79,7 +82,10 @@ export function Contact() {
                       </button>
                     ) : (
                       <a
-                        href={buildWhatsAppLink(WHATSAPP_NUMBER, option.message)}
+                        href={buildWhatsAppLink(
+                          WHATSAPP_NUMBER,
+                          composeInquiryMessage(option.message, eventType, eventDate)
+                        )}
                         target="_blank"
                         rel="noopener noreferrer"
                         className={optionClassName}
@@ -93,6 +99,39 @@ export function Contact() {
               })}
             </ul>
 
+            <div className="mt-4 grid grid-cols-2 gap-3">
+              <label className="flex flex-col gap-1 text-left">
+                <span className="font-body text-xs uppercase tracking-[0.2em] text-rose-soft">
+                  Tipo de evento
+                </span>
+                <select
+                  id="event-type"
+                  value={eventType}
+                  onChange={(event) => setEventType(event.target.value)}
+                  className="w-full rounded-md border-2 border-rose-soft bg-blush/60 p-3 font-body text-sm text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose"
+                >
+                  <option value="">Selecione</option>
+                  <option value="Casamento">Casamento</option>
+                  <option value="Aniversario">Aniversário</option>
+                  <option value="Cha revelacao">Chá revelação</option>
+                  <option value="Evento corporativo">Evento corporativo</option>
+                  <option value="Outro">Outro</option>
+                </select>
+              </label>
+              <label className="flex flex-col gap-1 text-left">
+                <span className="font-body text-xs uppercase tracking-[0.2em] text-rose-soft">
+                  Data do evento
+                </span>
+                <input
+                  id="event-date"
+                  type="date"
+                  value={eventDate}
+                  onChange={(event) => setEventDate(event.target.value)}
+                  className="w-full rounded-md border-2 border-rose-soft bg-blush/60 p-3 font-body text-sm text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose"
+                />
+              </label>
+            </div>
+
             <div className="mt-4 sm:mt-6">
               <div className="hidden sm:block">
                 <textarea
@@ -103,7 +142,10 @@ export function Contact() {
                   className="w-full resize-none rounded-md border-2 border-rose-soft bg-blush/60 p-4 font-body text-sm text-ink placeholder:text-ink/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose"
                 />
                 <a
-                  href={buildWhatsAppLink(WHATSAPP_NUMBER, message)}
+                  href={buildWhatsAppLink(
+                    WHATSAPP_NUMBER,
+                    composeInquiryMessage(message, eventType, eventDate)
+                  )}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-disabled={message.trim().length === 0}
