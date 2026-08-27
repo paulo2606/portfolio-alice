@@ -26,10 +26,10 @@ export function AboutMe() {
           <Reveal x={-40} y={0}>
             <motion.div style={{ y: imageY }}>
               <Image
-                src="/images/alice-foto.png"
+                src="/images/alice-perfil.jpeg"
                 alt="Foto de Alice Santos"
-                width={720}
-                height={720}
+                width={1066}
+                height={1600}
                 className="h-[28rem] w-full animate-blob object-cover object-[center_15%] shadow-[0_30px_60px_-30px_rgba(36,20,23,0.45)] sm:h-[34rem]"
                 priority
               />
