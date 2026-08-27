@@ -45,8 +45,8 @@ describe("Projects", () => {
     });
     const video = firstCard.querySelector("video");
     expect(video).not.toBeNull();
-    expect(video).toHaveAttribute("src", "/video/projects/festa-15/01.mp4");
-    expect(video).toHaveAttribute("poster", "/video/projects/festa-15/01-poster.jpg");
+    expect(video).toHaveAttribute("src", "/video/projects/festa-15/festa-15-1.mp4");
+    expect(video).toHaveAttribute("poster", "/video/projects/festa-15/festa-15-1-poster.jpg");
     expect(video).toHaveAttribute("preload", "metadata");
     expect(video).toHaveProperty("muted", true);
     expect(video).toHaveProperty("loop", true);
@@ -115,7 +115,7 @@ describe("Projects", () => {
     const dialog = screen.getByRole("dialog");
     expect(dialog.querySelector("#video-modal-title")).toHaveTextContent(/eventos/i);
     const video = dialog.querySelector("video");
-    expect(video).toHaveAttribute("src", "/video/projects/eventos/01.mp4");
+    expect(video).toHaveAttribute("src", "/video/projects/eventos/eventos-1.mp4");
     expect(dialog.querySelector("#project-sidebar-title")).not.toBeInTheDocument();
   });
 

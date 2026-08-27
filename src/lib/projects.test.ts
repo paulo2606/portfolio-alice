@@ -33,12 +33,12 @@ describe("PROJECTS", () => {
   it("cada video aponta para um mp4 e um poster jpg dentro da pasta do projeto", () => {
     const festa15 = PROJECTS.find((p) => p.slug === "festa-15")!;
     expect(festa15.videos[0]).toEqual({
-      src: "/video/projects/festa-15/01.mp4",
-      poster: "/video/projects/festa-15/01-poster.jpg",
+      src: "/video/projects/festa-15/festa-15-1.mp4",
+      poster: "/video/projects/festa-15/festa-15-1-poster.jpg",
     });
     expect(festa15.videos[5]).toEqual({
-      src: "/video/projects/festa-15/06.mp4",
-      poster: "/video/projects/festa-15/06-poster.jpg",
+      src: "/video/projects/festa-15/festa-15-6.mp4",
+      poster: "/video/projects/festa-15/festa-15-6-poster.jpg",
     });
   });
 });

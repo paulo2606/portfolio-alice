@@ -13,11 +13,14 @@ export interface Project {
   hasGallery: boolean;
 }
 
-function video(slug: string, n: string): ProjectVideo {
-  return {
-    src: `/video/projects/${slug}/${n}.mp4`,
-    poster: `/video/projects/${slug}/${n}-poster.jpg`,
-  };
+function videos(slug: string, count: number): ProjectVideo[] {
+  return Array.from({ length: count }, (_, i) => {
+    const name = `${slug}-${i + 1}`;
+    return {
+      src: `/video/projects/${slug}/${name}.mp4`,
+      poster: `/video/projects/${slug}/${name}-poster.jpg`,
+    };
+  });
 }
 
 export const PROJECTS: Project[] = [
@@ -33,7 +36,7 @@ export const PROJECTS: Project[] = [
       "Making of dos bastidores",
     ],
     hasGallery: true,
-    videos: ["01", "02", "03", "04", "05", "06"].map((n) => video("festa-15", n)),
+    videos: videos("festa-15", 6),
   },
   {
     slug: "casamento-cha-de-panela",
@@ -47,7 +50,7 @@ export const PROJECTS: Project[] = [
       "Cobertura de bastidores",
     ],
     hasGallery: true,
-    videos: ["01", "02", "03", "04", "05"].map((n) => video("casamento-cha-de-panela", n)),
+    videos: videos("casamento-cha-de-panela", 5),
   },
   {
     slug: "aniversarios",
@@ -61,7 +64,7 @@ export const PROJECTS: Project[] = [
       "Fotos extraídas dos melhores momentos",
     ],
     hasGallery: true,
-    videos: ["01", "02", "03", "04", "05", "06"].map((n) => video("aniversarios", n)),
+    videos: videos("aniversarios", 6),
   },
   {
     slug: "eventos",
@@ -70,6 +73,6 @@ export const PROJECTS: Project[] = [
     summary: "",
     deliverables: [],
     hasGallery: false,
-    videos: ["01", "02"].map((n) => video("eventos", n)),
+    videos: videos("eventos", 2),
   },
 ];

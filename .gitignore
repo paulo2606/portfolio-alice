@@ -42,3 +42,10 @@ next-env.d.ts
 
 # claude / agent tooling (not part of the project)
 .claude
+.caveman.json
+
+# raw video footage (unprocessed, too heavy for git history)
+/raw-footage*
+
+# local tooling (not part of the project)
+.tools/
