@@ -1,431 +1,140 @@
 "use client";
 
 import { useRef, useState } from "react";
-import Image from "next/image";
-import { motion, useReducedMotion } from "framer-motion";
-import { ProjectSidebar, type ProjectGalleryImage } from "./ProjectSidebar";
+import { PROJECTS, type Project, type ProjectVideo } from "@/lib/projects";
+import { ProjectSidebar } from "./ProjectSidebar";
 import { Reveal } from "./Reveal";
+import { VideoModal } from "./VideoModal";
 
-interface GalleryItem {
-  name: string;
-  image: string;
+interface MosaicTile {
+  project: Project;
+  coverIndex: 0 | 1;
   area: string;
   mobileArea?: string;
-  video?: string;
-  category: string;
-  summary: string;
-  deliverables: string[];
-  gallery: ProjectGalleryImage[];
 }
 
-const MOSAIC_AREAS = [
-  "col-start-1 row-start-1 row-span-3",
-  "col-start-2 col-span-2 row-start-1",
-  "col-start-2 row-start-2 row-span-2",
-  "col-start-3 row-start-2",
-  "col-start-3 row-start-3",
-  "col-start-4 row-start-1 row-span-3",
-];
+const [festa15, casamento, aniversarios, eventos] = PROJECTS;
 
-function buildGallery(
-  entries: { src: string; alt: string }[]
-): ProjectGalleryImage[] {
-  return entries.map((entry, index) => ({
-    ...entry,
-    area: MOSAIC_AREAS[index],
-  }));
-}
-
-const PORDOSOL_GALLERY = buildGallery([
+const MOSAIC: MosaicTile[] = [
   {
-    src: "https://images.unsplash.com/photo-1519741497674-611481863552?q=85&w=1200&auto=format&fit=crop",
-    alt: "Mãos dos noivos entrelaçadas com aliança",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1520854221256-17451cc331bf?q=85&w=1200&auto=format&fit=crop",
-    alt: "Noivos de mãos dadas ao entardecer",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?q=85&w=1200&auto=format&fit=crop",
-    alt: "Alianças e buquê nas mãos dos noivos",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1544078751-58fee2d8a03b?q=85&w=1200&auto=format&fit=crop",
-    alt: "Noivos abraçados em praia de areia escura",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1606216794074-735e91aa2c92?q=85&w=1200&auto=format&fit=crop",
-    alt: "Noivos sorrindo de mãos dadas sob um coqueiro",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=85&w=1200&auto=format&fit=crop",
-    alt: "Beijo dos noivos sob chuva de pétalas",
-  },
-]);
-
-const ANIVERSARIO_GALLERY = buildGallery([
-  {
-    src: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?q=85&w=1200&auto=format&fit=crop",
-    alt: "Convidados celebrando a festa de 15 anos",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?q=85&w=1200&auto=format&fit=crop",
-    alt: "Balões coloridos decorando a festa",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1560243563-062bfc001d68?q=85&w=1200&auto=format&fit=crop",
-    alt: "Mesa de doces com escrita de aniversário",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1533294455009-a77b7557d2d1?q=85&w=1200&auto=format&fit=crop",
-    alt: "Amigas reunidas comemorando à mesa",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1558636508-e0db3814bd1d?q=85&w=1200&auto=format&fit=crop",
-    alt: "Aniversariante em um momento de retrato",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1464349153735-7db50ed83c84?q=85&w=1200&auto=format&fit=crop",
-    alt: "Criança brincando durante a comemoração",
-  },
-]);
-
-const MAKING_OF_GALLERY = buildGallery([
-  {
-    src: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?q=85&w=1200&auto=format&fit=crop",
-    alt: "Mesa posta decorada para a recepção do casamento",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?q=85&w=1200&auto=format&fit=crop",
-    alt: "Alianças e buquê nas mãos dos noivos",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=85&w=1200&auto=format&fit=crop",
-    alt: "Noivos soltando balões na festa junto à piscina",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=85&w=1200&auto=format&fit=crop",
-    alt: "Beijo dos noivos sob chuva de pétalas",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1544078751-58fee2d8a03b?q=85&w=1200&auto=format&fit=crop",
-    alt: "Noivos abraçados em praia de areia escura",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1606216794074-735e91aa2c92?q=85&w=1200&auto=format&fit=crop",
-    alt: "Noivos sorrindo de mãos dadas sob um coqueiro",
-  },
-]);
-
-const CHA_REVELACAO_GALLERY = buildGallery([
-  {
-    src: "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?q=85&w=1200&auto=format&fit=crop",
-    alt: "Decoração em tons pastel do chá revelação",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1554151228-14d9def656e4?q=85&w=1200&auto=format&fit=crop",
-    alt: "Itens de bebê em tons pastel sobre a mesa",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?q=85&w=1200&auto=format&fit=crop",
-    alt: "Balões azuis e rosa da revelação",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1560243563-062bfc001d68?q=85&w=1200&auto=format&fit=crop",
-    alt: "Mesa de doces da celebração",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1533294455009-a77b7557d2d1?q=85&w=1200&auto=format&fit=crop",
-    alt: "Família reunida para a revelação",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1520854221256-17451cc331bf?q=85&w=1200&auto=format&fit=crop",
-    alt: "Casal em momento especial durante o evento",
-  },
-]);
-
-const CORPORATIVO_GALLERY = buildGallery([
-  {
-    src: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=85&w=1200&auto=format&fit=crop",
-    alt: "Auditório preparado para o evento corporativo",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1511578314322-379afb476865?q=85&w=1200&auto=format&fit=crop",
-    alt: "Sala de conferência com telas de projeção",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=85&w=1200&auto=format&fit=crop",
-    alt: "Plateia acompanhando a apresentação",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=85&w=1200&auto=format&fit=crop",
-    alt: "Participantes aplaudindo durante a reunião",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=85&w=1200&auto=format&fit=crop",
-    alt: "Equipe alinhando estratégia no quadro branco",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1509631179647-0177331693ae?q=85&w=1200&auto=format&fit=crop",
-    alt: "Reunião de equipe em espaço corporativo",
-  },
-]);
-
-const EDITORIAL_GALLERY = buildGallery([
-  {
-    src: "https://images.unsplash.com/photo-1483985988355-763728e1935b?q=85&w=1200&auto=format&fit=crop",
-    alt: "Modelo em pose editorial de perfil",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=85&w=1200&auto=format&fit=crop",
-    alt: "Retrato editorial em fundo escuro",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=85&w=1200&auto=format&fit=crop",
-    alt: "Retrato ao entardecer para ensaio editorial",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=85&w=1200&auto=format&fit=crop",
-    alt: "Modelo posando em fundo verde neon",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1515187029135-18ee286d815b?q=85&w=1200&auto=format&fit=crop",
-    alt: "Araras de roupas usadas na produção do ensaio",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?q=85&w=1200&auto=format&fit=crop",
-    alt: "Modelo sorrindo em cenário externo",
-  },
-]);
-
-const FESTA_INFANTIL_GALLERY = buildGallery([
-  {
-    src: "https://images.unsplash.com/photo-1464349153735-7db50ed83c84?q=85&w=1200&auto=format&fit=crop",
-    alt: "Criança brincando na festa infantil",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?q=85&w=1200&auto=format&fit=crop",
-    alt: "Balões coloridos decorando a festa infantil",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1560243563-062bfc001d68?q=85&w=1200&auto=format&fit=crop",
-    alt: "Mesa de doces da festa infantil",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1558636508-e0db3814bd1d?q=85&w=1200&auto=format&fit=crop",
-    alt: "Aniversariante em um momento de retrato",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1533294455009-a77b7557d2d1?q=85&w=1200&auto=format&fit=crop",
-    alt: "Familiares reunidos na comemoração",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?q=85&w=1200&auto=format&fit=crop",
-    alt: "Convidados celebrando a festa infantil",
-  },
-]);
-
-const DOCUMENTARIO_GALLERY = buildGallery([
-  {
-    src: "https://images.unsplash.com/photo-1478737270239-2f02b77fc618?q=85&w=1200&auto=format&fit=crop",
-    alt: "Entrevistado durante a gravação do documentário",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?q=85&w=1200&auto=format&fit=crop",
-    alt: "Retrato do entrevistado para o documentário",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=85&w=1200&auto=format&fit=crop",
-    alt: "Edição do material durante a produção",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1517430816045-df4b7de11d1d?q=85&w=1200&auto=format&fit=crop",
-    alt: "Equipe organizando a produção do documentário",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1511578314322-379afb476865?q=85&w=1200&auto=format&fit=crop",
-    alt: "Sala preparada para a gravação",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=85&w=1200&auto=format&fit=crop",
-    alt: "Equipe reunida durante a produção",
-  },
-]);
-
-const GALLERY: GalleryItem[] = [
-  {
-    name: "Casamento ao Pôr do Sol",
-    image:
-      "https://images.unsplash.com/photo-1519741497674-611481863552?q=90&w=2400&auto=format&fit=crop",
+    project: festa15,
+    coverIndex: 0,
     area: "col-start-1 row-start-1 row-span-2",
     mobileArea: "col-start-1 row-start-1 row-span-3",
-    category: "Casamento",
-    summary:
-      "Cobertura completa da cerimônia e festa, com stories em tempo real para os convidados acompanharem cada momento.",
-    deliverables: [
-      "Stories editados durante o evento",
-      "Vídeo highlight entregue em até 24h",
-      "Making of dos bastidores",
-    ],
-    gallery: PORDOSOL_GALLERY,
   },
   {
-    name: "Aniversário de 15 Anos",
-    image:
-      "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?q=90&w=2400&auto=format&fit=crop",
+    project: casamento,
+    coverIndex: 0,
     area: "col-start-2 col-span-2 row-start-1",
     mobileArea: "col-start-2 row-start-1",
-    category: "Aniversário",
-    summary:
-      "Registro do dia inteiro com foco na energia da festa e nos detalhes que os convidados vão querer reviver.",
-    deliverables: [
-      "Stories em tempo real",
-      "Reel de destaque para postar no mesmo dia",
-      "Fotos extraídas dos melhores momentos",
-    ],
-    gallery: ANIVERSARIO_GALLERY,
   },
   {
-    name: "Making of Casamento",
-    image:
-      "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?q=90&w=2400&auto=format&fit=crop",
+    project: aniversarios,
+    coverIndex: 0,
     area: "col-start-4 col-span-2 row-start-1",
-    video: "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4",
     mobileArea: "col-start-2 row-start-2",
-    category: "Making of",
-    summary: "Bastidores da preparação, do vestido ao último retoque, contados com ritmo e leveza.",
-    deliverables: [
-      "Vídeo de bastidores editado",
-      "Stories em tempo real",
-      "Trilha sonora personalizada",
-    ],
-    gallery: MAKING_OF_GALLERY,
   },
+  { project: casamento, coverIndex: 1, area: "col-start-2 col-span-2 row-start-2" },
   {
-    name: "Chá Revelação",
-    image:
-      "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?q=90&w=2400&auto=format&fit=crop",
-    area: "col-start-2 col-span-2 row-start-2",
-    category: "Chá Revelação",
-    summary:
-      "Cobertura do momento da revelação com edição rápida para compartilhar a novidade ainda durante o evento.",
-    deliverables: [
-      "Vídeo do momento da revelação editado na hora",
-      "Stories em tempo real",
-      "Fotos do evento",
-    ],
-    gallery: CHA_REVELACAO_GALLERY,
-  },
-  {
-    name: "Evento Corporativo",
-    image:
-      "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=90&w=2400&auto=format&fit=crop",
+    project: eventos,
+    coverIndex: 0,
     area: "col-start-4 row-start-2 row-span-2",
-    category: "Corporativo",
-    summary:
-      "Cobertura profissional de palestras, lançamentos e confraternizações, com entrega ágil para uso institucional.",
-    deliverables: [
-      "Vídeo institucional editado",
-      "Fotos para redes sociais da empresa",
-      "Stories em tempo real do evento",
-    ],
-    gallery: CORPORATIVO_GALLERY,
-  },
-  {
-    name: "Ensaio Editorial",
-    image:
-      "https://images.unsplash.com/photo-1483985988355-763728e1935b?q=90&w=2400&auto=format&fit=crop",
-    area: "col-start-5 row-start-2 row-span-2",
     mobileArea: "col-start-2 row-start-3 row-span-2",
-    category: "Editorial",
-    summary:
-      "Produção autoral com direção de arte, pensada para marcas e perfis que querem uma estética própria.",
-    deliverables: [
-      "Ensaio fotográfico e em vídeo",
-      "Direção de arte e styling",
-      "Conteúdo pronto para redes sociais",
-    ],
-    gallery: EDITORIAL_GALLERY,
   },
+  { project: aniversarios, coverIndex: 1, area: "col-start-5 row-start-2 row-span-2" },
   {
-    name: "Festa Infantil",
-    image:
-      "https://images.unsplash.com/photo-1464349153735-7db50ed83c84?q=90&w=2400&auto=format&fit=crop",
+    project: festa15,
+    coverIndex: 1,
     area: "col-start-1 col-span-2 row-start-3",
     mobileArea: "col-start-1 row-start-4",
-    category: "Festa Infantil",
-    summary:
-      "Cobertura leve e espontânea, acompanhando as crianças e os detalhes da decoração sem interromper a festa.",
-    deliverables: [
-      "Stories em tempo real",
-      "Vídeo highlight da festa",
-      "Fotos dos convidados e da decoração",
-    ],
-    gallery: FESTA_INFANTIL_GALLERY,
   },
-  {
-    name: "Documentário de Marca",
-    image:
-      "https://images.unsplash.com/photo-1478737270239-2f02b77fc618?q=90&w=2400&auto=format&fit=crop",
-    area: "col-start-3 row-start-3",
-    category: "Documentário",
-    summary:
-      "Narrativa em vídeo sobre a história, o processo ou os bastidores de uma marca, com entrevistas e imagens do dia a dia.",
-    deliverables: ["Roteiro e entrevistas", "Captação e edição completa", "Versões curtas para redes sociais"],
-    gallery: DOCUMENTARIO_GALLERY,
-  },
+  { project: eventos, coverIndex: 1, area: "col-start-3 row-start-3" },
 ];
 
-const MOBILE_GALLERY = GALLERY.filter((item) => item.mobileArea);
+const MOBILE_MOSAIC = MOSAIC.filter((tile) => tile.mobileArea);
 
 export function Projects() {
-  const [openItem, setOpenItem] = useState<GalleryItem | null>(null);
+  const [openProject, setOpenProject] = useState<{ project: Project; initialIndex: number } | null>(
+    null
+  );
+  const [openEventVideo, setOpenEventVideo] = useState<{ title: string; video: ProjectVideo } | null>(
+    null
+  );
   const triggerRef = useRef<HTMLElement | null>(null);
-  const prefersReducedMotion = useReducedMotion();
 
-  function handleOpen(item: GalleryItem) {
-    triggerRef.current = document.activeElement as HTMLElement;
-    setOpenItem(item);
+  function handleOpen(event: React.MouseEvent<HTMLButtonElement>, tile: MosaicTile) {
+    triggerRef.current = event.currentTarget;
+    if (tile.project.hasGallery) {
+      setOpenProject({ project: tile.project, initialIndex: tile.coverIndex });
+    } else {
+      setOpenEventVideo({
+        title: tile.project.name,
+        video: tile.project.videos[tile.coverIndex],
+      });
+    }
   }
 
-  function handleClose() {
-    setOpenItem(null);
+  function handleCloseProject() {
+    setOpenProject(null);
     triggerRef.current?.focus();
   }
 
-  function renderTile(item: GalleryItem, index: number, area: string) {
+  function handleCloseEventVideo() {
+    setOpenEventVideo(null);
+    triggerRef.current?.focus();
+  }
+
+  function playCover(event: React.SyntheticEvent<HTMLButtonElement>) {
+    const video = event.currentTarget.querySelector("video");
+    if (!video) return;
+    try {
+      video.play()?.catch(() => {});
+    } catch {
+      // ambientes sem suporte a play() (ex: jsdom em testes)
+    }
+  }
+
+  function pauseCover(event: React.SyntheticEvent<HTMLButtonElement>) {
+    const video = event.currentTarget.querySelector("video");
+    if (!video) return;
+    video.pause();
+    video.currentTime = 0;
+  }
+
+  function renderTile(tile: MosaicTile, area: string) {
+    const cover = tile.project.videos[tile.coverIndex];
     return (
-      <motion.button
-        key={item.name}
+      <button
+        key={`${tile.project.slug}-${tile.coverIndex}`}
         type="button"
-        onClick={() => handleOpen(item)}
-        aria-label={`Ver projeto: ${item.name}`}
-        initial={prefersReducedMotion ? undefined : { opacity: 0, scale: 0.85 }}
-        whileInView={prefersReducedMotion ? undefined : { opacity: 1, scale: 1 }}
-        viewport={{ once: true, amount: 0.4 }}
-        transition={{ duration: 0.5, delay: index * 0.05, ease: [0.22, 1, 0.36, 1] }}
+        onClick={(event) => handleOpen(event, tile)}
+        onMouseEnter={playCover}
+        onMouseLeave={pauseCover}
+        onFocus={playCover}
+        onBlur={pauseCover}
+        aria-label={`Ver projeto: ${tile.project.name}`}
         className={`group relative cursor-pointer overflow-hidden rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose ${area}`}
       >
-        <Image
-          src={item.image}
-          alt={item.name}
-          fill
-          sizes="(max-width: 768px) 50vw, 20vw"
-          priority={index === 0}
-          quality={90}
-          className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+        <video
+          src={cover.src}
+          poster={cover.poster}
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
         />
         <div className="absolute inset-0 flex items-center justify-center bg-ink/50 p-3 min-[1080px]:hidden">
           <span className="px-2 text-center font-display text-base italic text-paper">
-            {item.name}
+            {tile.project.name}
           </span>
         </div>
         <div className="absolute inset-0 hidden items-center justify-center bg-ink/0 opacity-0 transition-all duration-300 ease-out group-hover:bg-ink/60 group-hover:opacity-100 min-[1080px]:flex">
           <span className="px-4 text-center font-display text-2xl italic text-paper">
-            {item.name}
+            {tile.project.name}
           </span>
         </div>
-      </motion.button>
+      </button>
     );
   }
 
@@ -450,26 +159,33 @@ export function Projects() {
           data-testid="mobile-mosaic"
           className="grid aspect-[4/5] grid-cols-2 grid-rows-4 gap-1.5 min-[1080px]:hidden"
         >
-          {MOBILE_GALLERY.map((item, index) => renderTile(item, index, item.mobileArea!))}
+          {MOBILE_MOSAIC.map((tile) => renderTile(tile, tile.mobileArea!))}
         </div>
         <div
           data-testid="desktop-mosaic"
           className="hidden aspect-[1171/623] grid-cols-5 grid-rows-3 gap-2 min-[1080px]:grid"
         >
-          {GALLERY.map((item, index) => renderTile(item, index, item.area))}
+          {MOSAIC.map((tile) => renderTile(tile, tile.area))}
         </div>
       </div>
 
-      {openItem && (
+      {openProject && (
         <ProjectSidebar
-          title={openItem.name}
-          cover={{ src: openItem.image, alt: openItem.name }}
-          video={openItem.video}
-          category={openItem.category}
-          summary={openItem.summary}
-          deliverables={openItem.deliverables}
-          gallery={openItem.gallery}
-          onClose={handleClose}
+          title={openProject.project.name}
+          category={openProject.project.category}
+          summary={openProject.project.summary}
+          deliverables={openProject.project.deliverables}
+          featured={openProject.project.videos[openProject.initialIndex]}
+          gallery={openProject.project.videos}
+          onClose={handleCloseProject}
+        />
+      )}
+
+      {openEventVideo && (
+        <VideoModal
+          title={openEventVideo.title}
+          video={openEventVideo.video.src}
+          onClose={handleCloseEventVideo}
         />
       )}
     </section>

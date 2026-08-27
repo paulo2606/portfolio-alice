@@ -1,9 +1,13 @@
-import { render, screen, within } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Projects } from "./Projects";
 
 function getDesktopMosaic() {
   return screen.getByTestId("desktop-mosaic");
+}
+
+function getMobileMosaic() {
+  return screen.getByTestId("mobile-mosaic");
 }
 
 describe("Projects", () => {
@@ -17,110 +21,110 @@ describe("Projects", () => {
     expect(screen.getByRole("heading", { name: /o que fa(c|ç)o/i })).toBeInTheDocument();
   });
 
-  it("renderiza uma foto com nome para cada projeto do mosaico", () => {
+  it("renderiza 8 cards de video no mosaico desktop, 2 para cada um dos 4 projetos", () => {
     render(<Projects />);
     const desktop = getDesktopMosaic();
-    expect(within(desktop).getByAltText(/casamento ao p(o|ô)r do sol/i)).toBeInTheDocument();
-    expect(within(desktop).getAllByText(/casamento ao p(o|ô)r do sol/i).length).toBeGreaterThan(0);
-    expect(within(desktop).getByAltText(/anivers(a|á)rio de 15 anos/i)).toBeInTheDocument();
-    expect(within(desktop).getByAltText(/documentário de marca/i)).toBeInTheDocument();
+    expect(
+      within(desktop).getAllByRole("button", { name: /ver projeto: festa de 15 anos/i })
+    ).toHaveLength(2);
+    expect(
+      within(desktop).getAllByRole("button", { name: /ver projeto: casamento.chá de panela/i })
+    ).toHaveLength(2);
+    expect(
+      within(desktop).getAllByRole("button", { name: /ver projeto: aniversários/i })
+    ).toHaveLength(2);
+    expect(
+      within(desktop).getAllByRole("button", { name: /ver projeto: eventos/i })
+    ).toHaveLength(2);
   });
 
-  it("renderiza um mosaico reduzido e proprio para mobile", () => {
+  it("cada card usa video com poster e preload metadata, mudo e pausado por padrao", () => {
     render(<Projects />);
-    const mobile = screen.getByTestId("mobile-mosaic");
-    expect(within(mobile).queryByAltText(/ch(a|á) revela(c|ç)(a|ã)o/i)).not.toBeInTheDocument();
-    expect(within(mobile).getByAltText(/casamento ao p(o|ô)r do sol/i)).toBeInTheDocument();
+    const [firstCard] = within(getDesktopMosaic()).getAllByRole("button", {
+      name: /ver projeto: festa de 15 anos/i,
+    });
+    const video = firstCard.querySelector("video");
+    expect(video).not.toBeNull();
+    expect(video).toHaveAttribute("src", "/video/projects/festa-15/01.mp4");
+    expect(video).toHaveAttribute("poster", "/video/projects/festa-15/01-poster.jpg");
+    expect(video).toHaveAttribute("preload", "metadata");
+    expect(video).toHaveProperty("muted", true);
+    expect(video).toHaveProperty("loop", true);
+    expect(video).not.toHaveAttribute("autoplay");
   });
 
-  it("nao mostra o painel lateral antes de um clique", () => {
+  it("toca o video ao passar o mouse e pausa ao tirar o mouse", () => {
+    render(<Projects />);
+    const [firstCard] = within(getDesktopMosaic()).getAllByRole("button", {
+      name: /ver projeto: festa de 15 anos/i,
+    });
+    const video = firstCard.querySelector("video") as HTMLVideoElement;
+    const playSpy = jest.spyOn(video, "play").mockResolvedValue();
+    const pauseSpy = jest.spyOn(video, "pause").mockImplementation(() => {});
+
+    fireEvent.mouseEnter(firstCard);
+    expect(playSpy).toHaveBeenCalled();
+
+    fireEvent.mouseLeave(firstCard);
+    expect(pauseSpy).toHaveBeenCalled();
+  });
+
+  it("renderiza um mosaico mobile cobrindo os 4 projetos", () => {
+    render(<Projects />);
+    const mobile = getMobileMosaic();
+    expect(
+      within(mobile).getAllByRole("button", { name: /ver projeto: festa de 15 anos/i })
+    ).toHaveLength(2);
+    expect(
+      within(mobile).getAllByRole("button", { name: /ver projeto: casamento.chá de panela/i })
+    ).toHaveLength(1);
+    expect(
+      within(mobile).getAllByRole("button", { name: /ver projeto: aniversários/i })
+    ).toHaveLength(1);
+    expect(
+      within(mobile).getAllByRole("button", { name: /ver projeto: eventos/i })
+    ).toHaveLength(1);
+  });
+
+  it("nao mostra nenhum dialogo antes de um clique", () => {
     render(<Projects />);
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 
-  it("abre o painel com o player ao clicar no projeto de video", async () => {
+  it("clicar num card de festa de 15 anos abre o painel lateral com a galeria completa", async () => {
     const user = userEvent.setup();
     render(<Projects />);
-    await user.click(
-      within(getDesktopMosaic()).getByRole("button", { name: /ver projeto: making of casamento/i })
-    );
+    const [firstCard] = within(getDesktopMosaic()).getAllByRole("button", {
+      name: /ver projeto: festa de 15 anos/i,
+    });
+    await user.click(firstCard);
 
     const dialog = screen.getByRole("dialog");
-    expect(dialog).toBeInTheDocument();
-    expect(within(dialog).getByText(/making of casamento/i)).toBeInTheDocument();
-    expect(
-      within(dialog).getByAltText(/alian(c|ç)as e buqu(e|ê) nas m(a|ã)os dos noivos/i)
-    ).toBeInTheDocument();
+    expect(within(dialog).getByText(/festa de 15 anos/i)).toBeInTheDocument();
+    expect(dialog.querySelectorAll("video")).toHaveLength(7);
   });
 
-  it("mostra a categoria e os entregaveis do projeto no painel", async () => {
+  it("clicar num card de eventos abre direto o modal de video, sem painel lateral", async () => {
     const user = userEvent.setup();
     render(<Projects />);
-    await user.click(
-      within(getDesktopMosaic()).getByRole("button", { name: /ver projeto: making of casamento/i })
-    );
+    const [firstCard] = within(getDesktopMosaic()).getAllByRole("button", {
+      name: /ver projeto: eventos/i,
+    });
+    await user.click(firstCard);
 
     const dialog = screen.getByRole("dialog");
-    expect(within(dialog).getByText(/making of/i, { selector: "p" })).toBeInTheDocument();
-    expect(within(dialog).getByText(/v(i|í)deo de bastidores editado/i)).toBeInTheDocument();
-  });
-
-  it("abre o painel so com foto de capa e galeria para projetos sem video", async () => {
-    const user = userEvent.setup();
-    render(<Projects />);
-    await user.click(
-      within(getDesktopMosaic()).getByRole("button", {
-        name: /ver projeto: casamento ao p(o|ô)r do sol/i,
-      })
-    );
-
-    const dialog = screen.getByRole("dialog");
-    expect(dialog).toBeInTheDocument();
-    expect(dialog.querySelector("video")).not.toBeInTheDocument();
-    expect(
-      within(dialog).getByAltText(/noivos de m(a|ã)os dadas ao entardecer/i)
-    ).toBeInTheDocument();
-  });
-
-  it("as fotos da galeria comecam em preto e branco e ficam coloridas no hover", async () => {
-    const user = userEvent.setup();
-    render(<Projects />);
-    await user.click(
-      within(getDesktopMosaic()).getByRole("button", { name: /ver projeto: making of casamento/i })
-    );
-
-    const dialog = screen.getByRole("dialog");
-    const photo = within(dialog).getByAltText(
-      /alian(c|ç)as e buqu(e|ê) nas m(a|ã)os dos noivos/i
-    );
-    expect(photo).toHaveClass("grayscale");
-    expect(photo).toHaveClass("group-hover:grayscale-0");
-  });
-
-  it("amplia a foto da galeria ao clicar nela", async () => {
-    const user = userEvent.setup();
-    render(<Projects />);
-    await user.click(
-      within(getDesktopMosaic()).getByRole("button", { name: /ver projeto: making of casamento/i })
-    );
-
-    await user.click(
-      screen.getByRole("button", {
-        name: /ampliar foto: alian(c|ç)as e buqu(e|ê) nas m(a|ã)os dos noivos/i,
-      })
-    );
-
-    expect(
-      screen.getAllByAltText(/alian(c|ç)as e buqu(e|ê) nas m(a|ã)os dos noivos/i)
-    ).toHaveLength(2);
+    expect(dialog.querySelector("#video-modal-title")).toHaveTextContent(/eventos/i);
+    const video = dialog.querySelector("video");
+    expect(video).toHaveAttribute("src", "/video/projects/eventos/01.mp4");
+    expect(dialog.querySelector("#project-sidebar-title")).not.toBeInTheDocument();
   });
 
   it("fecha o painel com Esc e devolve o foco ao card que abriu", async () => {
     const user = userEvent.setup();
     render(<Projects />);
-    const trigger = within(getDesktopMosaic()).getByRole("button", {
-      name: /ver projeto: making of casamento/i,
-    });
+    const trigger = within(getDesktopMosaic()).getAllByRole("button", {
+      name: /ver projeto: aniversários/i,
+    })[0];
     await user.click(trigger);
 
     expect(screen.getByRole("dialog")).toBeInTheDocument();
