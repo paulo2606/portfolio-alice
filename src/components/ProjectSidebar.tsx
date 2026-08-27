@@ -13,6 +13,9 @@ interface ProjectSidebarProps {
   title: string;
   cover: { src: string; alt: string };
   video?: string;
+  category: string;
+  summary: string;
+  deliverables: string[];
   gallery: ProjectGalleryImage[];
   onClose: () => void;
 }
@@ -20,7 +23,16 @@ interface ProjectSidebarProps {
 const FOCUSABLE_SELECTOR =
   'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])';
 
-export function ProjectSidebar({ title, cover, video, gallery, onClose }: ProjectSidebarProps) {
+export function ProjectSidebar({
+  title,
+  cover,
+  video,
+  category,
+  summary,
+  deliverables,
+  gallery,
+  onClose,
+}: ProjectSidebarProps) {
   const dialogRef = useRef<HTMLDivElement>(null);
   const [entered, setEntered] = useState(false);
   const [lightbox, setLightbox] = useState<ProjectGalleryImage | null>(null);
@@ -128,6 +140,24 @@ export function ProjectSidebar({ title, cover, video, gallery, onClose }: Projec
                 />
               </div>
             )}
+          </div>
+
+          <div className="mt-8">
+            <p className="font-body text-sm uppercase tracking-[0.3em] text-rose-soft">
+              {category}
+            </p>
+            <p className="mt-3 font-body text-base leading-7 text-ink/80">{summary}</p>
+            <ul className="mt-4 flex flex-col gap-2">
+              {deliverables.map((item) => (
+                <li
+                  key={item}
+                  className="flex items-center gap-2 font-body text-sm text-ink/80"
+                >
+                  <span className="block h-1.5 w-1.5 shrink-0 rounded-full bg-rose" />
+                  {item}
+                </li>
+              ))}
+            </ul>
           </div>
 
           {gallery.length > 0 && (
