@@ -37,7 +37,11 @@ export function Contact() {
     <section id="contato" className="relative py-24">
       <div className="grid gap-10 md:grid-cols-2">
         <Reveal x={-30} y={0} className="flex flex-col items-center text-center">
-          <h2 className="font-display text-4xl italic text-rose sm:text-5xl">
+          <p className="inline-flex items-center gap-2 rounded-full border-2 border-rose-soft bg-paper/60 px-4 py-1.5 font-body text-xs uppercase tracking-[0.2em] text-rose">
+            <span className="block h-1.5 w-1.5 rounded-full bg-rose" />
+            Agenda com poucas datas disponíveis por mês
+          </p>
+          <h2 className="mt-4 font-display text-4xl italic text-rose sm:text-5xl">
             Vamos criar sua próxima história?
           </h2>
           <div className="my-4 flex items-center">

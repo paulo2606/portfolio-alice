@@ -62,6 +62,11 @@ describe("Contact", () => {
     expect(instagram).toHaveAttribute("href", expect.stringContaining("instagram.com"));
   });
 
+  it("mostra um aviso de disponibilidade de agenda", () => {
+    render(<Contact />);
+    expect(screen.getByText(/agenda/i)).toBeInTheDocument();
+  });
+
   it("acrescenta tipo de evento e data escolhidos ao link de envio (desktop)", async () => {
     const restoreMatchMedia = mockDesktopViewport();
     const user = userEvent.setup();
