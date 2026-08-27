@@ -114,14 +114,16 @@ export function Services() {
         ))}
       </ul>
 
-      <a
-        href={buildWhatsAppLink(WHATSAPP_NUMBER, WHATSAPP_MESSAGE_OPTIONS[0].message)}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="hidden"
-      >
-        Entrar em contato
-      </a>
+      <div className="mt-12 flex justify-center">
+        <a
+          href={buildWhatsAppLink(WHATSAPP_NUMBER, WHATSAPP_MESSAGE_OPTIONS[1].message)}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 rounded-full bg-rose px-8 py-4 font-body text-base text-paper transition-colors hover:bg-[#a83a5c] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose"
+        >
+          Quero contratar um serviço assim
+        </a>
+      </div>
 
       {openService && (
         <VideoModal
