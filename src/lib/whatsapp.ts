@@ -26,3 +26,24 @@ export const WHATSAPP_MESSAGE_OPTIONS: WhatsAppMessageOption[] = [
     message: "Oi Alice, quero conversar sobre a gestão de stories para o meu perfil.",
   },
 ];
+
+export function formatEventDateBR(isoDate: string): string {
+  const [year, month, day] = isoDate.split("-");
+  if (!year || !month || !day) return "";
+  return `${day}/${month}/${year}`;
+}
+
+export function composeInquiryMessage(
+  baseMessage: string,
+  eventType: string,
+  eventDate: string
+): string {
+  const details: string[] = [];
+  if (eventType.trim()) details.push(`Tipo de evento: ${eventType.trim()}`);
+  if (eventDate.trim()) {
+    const formatted = formatEventDateBR(eventDate.trim());
+    if (formatted) details.push(`Data: ${formatted}`);
+  }
+  if (details.length === 0) return baseMessage;
+  return `${baseMessage}\n\n${details.join("\n")}`;
+}
