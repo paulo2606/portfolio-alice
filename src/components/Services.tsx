@@ -15,15 +15,15 @@ const SERVICE_CARDS = [
     title: "Cobertura de eventos",
     description:
       "Do início ao fim da celebração, registrando os momentos que fazem a festa ser única, sem perder nenhum detalhe.",
-    video: "/video/projects/festa-15/festa-15-3.mp4",
-    poster: "/video/projects/festa-15/festa-15-3-poster.jpg",
+    video: "/video/projects/eventos/eventos-1.mp4",
+    poster: "/video/projects/eventos/eventos-1-poster.jpg",
   },
   {
     title: "Edição em tempo real",
     description:
       "Seu vídeo editado e pronto em tempo real para postar enquanto o evento acontece, com o clima e a energia do momento intactos.",
-    video: "/video/projects/eventos/eventos-1.mp4",
-    poster: "/video/projects/eventos/eventos-1-poster.jpg",
+    video: "/video/projects/festa-15/festa-15-3.mp4",
+    poster: "/video/projects/festa-15/festa-15-3-poster.jpg",
   },
   {
     title: "Momentos espontâneos",
