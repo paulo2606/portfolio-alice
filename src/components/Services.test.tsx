@@ -16,29 +16,38 @@ describe("Services", () => {
     expect(cta.getAttribute("rel")).toEqual(expect.stringContaining("noopener"));
   });
 
-  it("nao carrega os videos automaticamente, so mostra o poster ate o hover", () => {
+  it("toca automaticamente, mudo, mostrando o poster ate carregar", () => {
     render(<Services />);
 
     const cards = screen.getAllByRole("button", { name: /ver vídeo:/i });
     for (const card of cards) {
       const video = card.querySelector("video");
-      expect(video).not.toHaveAttribute("autoplay");
+      expect(video).toHaveAttribute("autoplay");
+      expect(video).toHaveProperty("muted", true);
       expect(video).toHaveAttribute("preload", "metadata");
       expect(video).toHaveAttribute("poster");
     }
   });
 
-  it("toca o video ao passar o mouse e pausa ao tirar o mouse", () => {
+  it("reinicia o video ao atingir a janela curta de loop, sem baixar o resto do arquivo", () => {
     render(<Services />);
     const [firstCard] = screen.getAllByRole("button", { name: /ver vídeo:/i });
     const video = firstCard.querySelector("video") as HTMLVideoElement;
-    const playSpy = jest.spyOn(video, "play").mockResolvedValue();
-    const pauseSpy = jest.spyOn(video, "pause").mockImplementation(() => {});
 
-    fireEvent.mouseEnter(firstCard);
-    expect(playSpy).toHaveBeenCalled();
+    Object.defineProperty(video, "currentTime", { value: 4.3, writable: true });
+    fireEvent.timeUpdate(video);
 
-    fireEvent.mouseLeave(firstCard);
-    expect(pauseSpy).toHaveBeenCalled();
+    expect(video.currentTime).toBe(0);
+  });
+
+  it("nao reinicia antes de atingir a janela curta de loop", () => {
+    render(<Services />);
+    const [firstCard] = screen.getAllByRole("button", { name: /ver vídeo:/i });
+    const video = firstCard.querySelector("video") as HTMLVideoElement;
+
+    Object.defineProperty(video, "currentTime", { value: 1.5, writable: true });
+    fireEvent.timeUpdate(video);
+
+    expect(video.currentTime).toBe(1.5);
   });
 });

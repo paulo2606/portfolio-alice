@@ -34,6 +34,8 @@ const SERVICE_CARDS = [
   },
 ];
 
+const COVER_LOOP_SECONDS = 4;
+
 export function Services() {
   const [openService, setOpenService] = useState<(typeof SERVICE_CARDS)[number] | null>(
     null
@@ -51,21 +53,11 @@ export function Services() {
     triggerRef.current?.focus();
   }
 
-  function playCover(event: React.SyntheticEvent<HTMLButtonElement>) {
-    const video = event.currentTarget.querySelector("video");
-    if (!video) return;
-    try {
-      video.play()?.catch(() => {});
-    } catch {
-      // ambientes sem suporte a play() (ex: jsdom em testes)
+  function loopCoverEarly(event: React.SyntheticEvent<HTMLVideoElement>) {
+    const video = event.currentTarget;
+    if (video.currentTime >= COVER_LOOP_SECONDS) {
+      video.currentTime = 0;
     }
-  }
-
-  function pauseCover(event: React.SyntheticEvent<HTMLButtonElement>) {
-    const video = event.currentTarget.querySelector("video");
-    if (!video) return;
-    video.pause();
-    video.currentTime = 0;
   }
 
   return (
@@ -94,10 +86,6 @@ export function Services() {
             <button
               type="button"
               onClick={() => handleOpen(service)}
-              onMouseEnter={playCover}
-              onMouseLeave={pauseCover}
-              onFocus={playCover}
-              onBlur={pauseCover}
               aria-label={`Ver vídeo: ${service.title}`}
               className="group relative aspect-[3/4] w-full cursor-pointer overflow-hidden rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose"
             >
@@ -105,7 +93,8 @@ export function Services() {
                 className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                 src={service.video}
                 poster={service.poster}
-                loop
+                onTimeUpdate={loopCoverEarly}
+                autoPlay
                 muted
                 playsInline
                 preload="metadata"
