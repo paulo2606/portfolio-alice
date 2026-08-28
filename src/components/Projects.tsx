@@ -53,6 +53,8 @@ const MOSAIC: MosaicTile[] = [
 
 const MOBILE_MOSAIC = MOSAIC.filter((tile) => tile.mobileArea);
 
+const COVER_LOOP_SECONDS = 5;
+
 export function Projects() {
   const [openProject, setOpenProject] = useState<{ project: Project; initialIndex: number } | null>(
     null
@@ -84,13 +86,10 @@ export function Projects() {
     triggerRef.current?.focus();
   }
 
-  function playCover(video: HTMLVideoElement | null) {
-    if (!video) return;
-    video.muted = true;
-    try {
-      video.play()?.catch(() => {});
-    } catch {
-      // ambientes sem suporte a play() (ex: jsdom em testes)
+  function loopCoverEarly(event: React.SyntheticEvent<HTMLVideoElement>) {
+    const video = event.currentTarget;
+    if (video.currentTime >= COVER_LOOP_SECONDS) {
+      video.currentTime = 0;
     }
   }
 
@@ -105,14 +104,13 @@ export function Projects() {
         className={`group relative cursor-pointer overflow-hidden rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose ${area}`}
       >
         <video
-          ref={playCover}
           src={cover.src}
           poster={cover.poster}
+          onTimeUpdate={loopCoverEarly}
           autoPlay
           muted
-          loop
           playsInline
-          preload="auto"
+          preload="metadata"
           className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
         />
         <div className="absolute inset-0 flex items-center justify-center bg-ink/50 p-3 min-[1080px]:hidden">

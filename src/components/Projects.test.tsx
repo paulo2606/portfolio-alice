@@ -1,4 +1,4 @@
-import { render, screen, within } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Projects } from "./Projects";
 
@@ -38,7 +38,7 @@ describe("Projects", () => {
     ).toHaveLength(2);
   });
 
-  it("cada card usa video com poster, tocando automaticamente em loop e mudo", () => {
+  it("cada card usa video com poster, tocando automaticamente e mudo", () => {
     render(<Projects />);
     const [firstCard] = within(getDesktopMosaic()).getAllByRole("button", {
       name: /ver projeto: festa de 15 anos/i,
@@ -49,7 +49,33 @@ describe("Projects", () => {
     expect(video).toHaveAttribute("poster", "/video/projects/festa-15/festa-15-1-poster.jpg");
     expect(video).toHaveAttribute("autoplay");
     expect(video).toHaveProperty("muted", true);
-    expect(video).toHaveProperty("loop", true);
+    expect(video).toHaveAttribute("preload", "metadata");
+  });
+
+  it("reinicia o video do card ao atingir 5 segundos, sem baixar o arquivo inteiro", () => {
+    render(<Projects />);
+    const [firstCard] = within(getDesktopMosaic()).getAllByRole("button", {
+      name: /ver projeto: festa de 15 anos/i,
+    });
+    const video = firstCard.querySelector("video") as HTMLVideoElement;
+
+    Object.defineProperty(video, "currentTime", { value: 5.2, writable: true });
+    fireEvent.timeUpdate(video);
+
+    expect(video.currentTime).toBe(0);
+  });
+
+  it("nao reinicia o video do card antes de atingir 5 segundos", () => {
+    render(<Projects />);
+    const [firstCard] = within(getDesktopMosaic()).getAllByRole("button", {
+      name: /ver projeto: festa de 15 anos/i,
+    });
+    const video = firstCard.querySelector("video") as HTMLVideoElement;
+
+    Object.defineProperty(video, "currentTime", { value: 2, writable: true });
+    fireEvent.timeUpdate(video);
+
+    expect(video.currentTime).toBe(2);
   });
 
   it("renderiza um mosaico mobile cobrindo os 4 projetos", () => {
