@@ -16,8 +16,8 @@ export default function Page() {
         <RuleGrid />
         <AboutMe />
         <Projects />
-        <Services />
         <Contact />
+        <Services />
       </div>
       <Footer />
     </main>
