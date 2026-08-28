@@ -16,18 +16,21 @@ const SERVICE_CARDS = [
     description:
       "Do início ao fim da celebração, registrando os momentos que fazem a festa ser única, sem perder nenhum detalhe.",
     video: "/video/projects/festa-15/festa-15-3.mp4",
+    poster: "/video/projects/festa-15/festa-15-3-poster.jpg",
   },
   {
     title: "Edição em tempo real",
     description:
       "Seu vídeo editado e pronto em tempo real para postar enquanto o evento acontece, com o clima e a energia do momento intactos.",
     video: "/video/projects/eventos/eventos-1.mp4",
+    poster: "/video/projects/eventos/eventos-1-poster.jpg",
   },
   {
     title: "Momentos espontâneos",
     description:
       "Registro natural e sem poses forçadas, capturando reações e afetos reais de quem está ali.",
     video: "/video/projects/aniversarios/aniversarios-5.mp4",
+    poster: "/video/projects/aniversarios/aniversarios-5-poster.jpg",
   },
 ];
 
@@ -48,14 +51,21 @@ export function Services() {
     triggerRef.current?.focus();
   }
 
-  function playVideo(video: HTMLVideoElement | null) {
+  function playCover(event: React.SyntheticEvent<HTMLButtonElement>) {
+    const video = event.currentTarget.querySelector("video");
     if (!video) return;
-    video.muted = true;
     try {
       video.play()?.catch(() => {});
     } catch {
       // ambientes sem suporte a play() (ex: jsdom em testes)
     }
+  }
+
+  function pauseCover(event: React.SyntheticEvent<HTMLButtonElement>) {
+    const video = event.currentTarget.querySelector("video");
+    if (!video) return;
+    video.pause();
+    video.currentTime = 0;
   }
 
   return (
@@ -84,18 +94,21 @@ export function Services() {
             <button
               type="button"
               onClick={() => handleOpen(service)}
+              onMouseEnter={playCover}
+              onMouseLeave={pauseCover}
+              onFocus={playCover}
+              onBlur={pauseCover}
               aria-label={`Ver vídeo: ${service.title}`}
               className="group relative aspect-[3/4] w-full cursor-pointer overflow-hidden rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose"
             >
               <video
-                ref={playVideo}
                 className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                 src={service.video}
-                autoPlay
+                poster={service.poster}
                 loop
                 muted
                 playsInline
-                preload="auto"
+                preload="metadata"
               />
               <div
                 className="absolute inset-x-0 bottom-0 h-1/2 backdrop-blur-xl [mask-image:linear-gradient(to_top,black_20%,transparent)] [-webkit-mask-image:linear-gradient(to_top,black_20%,transparent)]"
