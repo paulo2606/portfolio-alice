@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, within } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Projects } from "./Projects";
 
@@ -38,7 +38,7 @@ describe("Projects", () => {
     ).toHaveLength(2);
   });
 
-  it("cada card usa video com poster e preload metadata, mudo e pausado por padrao", () => {
+  it("cada card usa video com poster, tocando automaticamente em loop e mudo", () => {
     render(<Projects />);
     const [firstCard] = within(getDesktopMosaic()).getAllByRole("button", {
       name: /ver projeto: festa de 15 anos/i,
@@ -47,26 +47,9 @@ describe("Projects", () => {
     expect(video).not.toBeNull();
     expect(video).toHaveAttribute("src", "/video/projects/festa-15/festa-15-1.mp4");
     expect(video).toHaveAttribute("poster", "/video/projects/festa-15/festa-15-1-poster.jpg");
-    expect(video).toHaveAttribute("preload", "metadata");
+    expect(video).toHaveAttribute("autoplay");
     expect(video).toHaveProperty("muted", true);
     expect(video).toHaveProperty("loop", true);
-    expect(video).not.toHaveAttribute("autoplay");
-  });
-
-  it("toca o video ao passar o mouse e pausa ao tirar o mouse", () => {
-    render(<Projects />);
-    const [firstCard] = within(getDesktopMosaic()).getAllByRole("button", {
-      name: /ver projeto: festa de 15 anos/i,
-    });
-    const video = firstCard.querySelector("video") as HTMLVideoElement;
-    const playSpy = jest.spyOn(video, "play").mockResolvedValue();
-    const pauseSpy = jest.spyOn(video, "pause").mockImplementation(() => {});
-
-    fireEvent.mouseEnter(firstCard);
-    expect(playSpy).toHaveBeenCalled();
-
-    fireEvent.mouseLeave(firstCard);
-    expect(pauseSpy).toHaveBeenCalled();
   });
 
   it("renderiza um mosaico mobile cobrindo os 4 projetos", () => {

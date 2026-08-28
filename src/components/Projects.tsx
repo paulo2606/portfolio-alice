@@ -84,21 +84,14 @@ export function Projects() {
     triggerRef.current?.focus();
   }
 
-  function playCover(event: React.SyntheticEvent<HTMLButtonElement>) {
-    const video = event.currentTarget.querySelector("video");
+  function playCover(video: HTMLVideoElement | null) {
     if (!video) return;
+    video.muted = true;
     try {
       video.play()?.catch(() => {});
     } catch {
       // ambientes sem suporte a play() (ex: jsdom em testes)
     }
-  }
-
-  function pauseCover(event: React.SyntheticEvent<HTMLButtonElement>) {
-    const video = event.currentTarget.querySelector("video");
-    if (!video) return;
-    video.pause();
-    video.currentTime = 0;
   }
 
   function renderTile(tile: MosaicTile, area: string) {
@@ -108,20 +101,18 @@ export function Projects() {
         key={`${tile.project.slug}-${tile.coverIndex}`}
         type="button"
         onClick={(event) => handleOpen(event, tile)}
-        onMouseEnter={playCover}
-        onMouseLeave={pauseCover}
-        onFocus={playCover}
-        onBlur={pauseCover}
         aria-label={`Ver projeto: ${tile.project.name}`}
         className={`group relative cursor-pointer overflow-hidden rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose ${area}`}
       >
         <video
+          ref={playCover}
           src={cover.src}
           poster={cover.poster}
+          autoPlay
           muted
           loop
           playsInline
-          preload="metadata"
+          preload="auto"
           className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
         />
         <div className="absolute inset-0 flex items-center justify-center bg-ink/50 p-3 min-[1080px]:hidden">
