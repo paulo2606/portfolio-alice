@@ -74,6 +74,18 @@ describe("ProjectSidebar", () => {
     expect(modalVideo).toHaveAttribute("src", GALLERY[1].src);
   });
 
+  it("trava o scroll da pagina de fundo enquanto o painel esta aberto", () => {
+    const { unmount } = renderSidebar();
+
+    expect(document.body.style.overflow).toBe("hidden");
+    expect(document.body.style.position).toBe("fixed");
+
+    unmount();
+
+    expect(document.body.style.overflow).toBe("");
+    expect(document.body.style.position).toBe("");
+  });
+
   it("fecha o modal de video com Esc sem fechar o painel", async () => {
     const user = userEvent.setup();
     renderSidebar();

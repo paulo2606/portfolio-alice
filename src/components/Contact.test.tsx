@@ -91,6 +91,27 @@ describe("Contact", () => {
     restoreMatchMedia();
   });
 
+  it("esconde o icone de camera 3d no mobile", () => {
+    const { container } = render(<Contact />);
+    const cameraWrapper = container.querySelector('img[src*="camera-3d"]')?.closest("div");
+    expect(cameraWrapper?.className).toEqual(expect.stringContaining("hidden"));
+    expect(cameraWrapper?.className).toEqual(expect.stringContaining("sm:flex"));
+  });
+
+  it("empilha os campos de tipo e data do evento no mobile, lado a lado a partir do sm", () => {
+    render(<Contact />);
+    const dateField = screen.getByLabelText(/data do evento/i);
+    const grid = dateField.closest("label")?.parentElement;
+    expect(grid?.className).toEqual(expect.stringContaining("grid-cols-1"));
+    expect(grid?.className).toEqual(expect.stringContaining("sm:grid-cols-2"));
+  });
+
+  it("mostra a caixa de mensagem e o botao de enviar tambem no mobile", () => {
+    render(<Contact />);
+    expect(screen.getByRole("textbox", { name: /mensagem/i })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /enviar no whatsapp/i })).toBeInTheDocument();
+  });
+
   it("no mobile, a mensagem enviada inclui o tipo de evento escolhido", async () => {
     const user = userEvent.setup();
     render(<Contact />);

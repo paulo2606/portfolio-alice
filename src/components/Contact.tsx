@@ -47,7 +47,7 @@ export function Contact() {
           <div className="my-4 flex items-center">
             <span className="h-px w-24 bg-rose-soft/30" />
           </div>
-          <div className="relative flex flex-1 flex-col items-center justify-center">
+          <div className="relative hidden flex-1 flex-col items-center justify-center sm:flex">
             <Image
               src="/images/camera-3d.png"
               alt=""
@@ -103,7 +103,7 @@ export function Contact() {
               })}
             </ul>
 
-            <div className="mt-4 grid grid-cols-2 gap-3">
+            <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
               <label className="flex flex-col gap-1 text-left">
                 <span className="font-body text-xs uppercase tracking-[0.2em] text-rose-soft">
                   Tipo de evento
@@ -137,31 +137,29 @@ export function Contact() {
             </div>
 
             <div className="mt-4 sm:mt-6">
-              <div className="hidden sm:block">
-                <textarea
-                  value={message}
-                  onChange={(event) => setMessage(event.target.value)}
-                  rows={3}
-                  aria-label="Mensagem para o WhatsApp"
-                  className="w-full resize-none rounded-md border-2 border-rose-soft bg-blush/60 p-4 font-body text-sm text-ink placeholder:text-ink/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose"
+              <textarea
+                value={message}
+                onChange={(event) => setMessage(event.target.value)}
+                rows={3}
+                aria-label="Mensagem para o WhatsApp"
+                className="w-full resize-none rounded-md border-2 border-rose-soft bg-blush/60 p-4 font-body text-sm text-ink placeholder:text-ink/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose"
+              />
+              <a
+                href={buildWhatsAppLink(
+                  WHATSAPP_NUMBER,
+                  composeInquiryMessage(message, eventType, eventDate)
+                )}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-disabled={message.trim().length === 0}
+                className="group mt-4 flex w-full items-center justify-center gap-2 overflow-hidden rounded-full bg-rose px-8 py-4 font-body text-base text-paper transition-colors hover:bg-[#a83a5c] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose aria-disabled:pointer-events-none aria-disabled:opacity-50"
+              >
+                <span>Enviar no WhatsApp</span>
+                <PaperPlaneIcon
+                  aria-hidden="true"
+                  className="h-7 w-7 shrink-0 -translate-x-4 opacity-0 transition-all duration-[400ms] ease-out group-hover:translate-x-0 group-hover:opacity-100"
                 />
-                <a
-                  href={buildWhatsAppLink(
-                    WHATSAPP_NUMBER,
-                    composeInquiryMessage(message, eventType, eventDate)
-                  )}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-disabled={message.trim().length === 0}
-                  className="group mt-4 flex w-full items-center justify-center gap-2 overflow-hidden rounded-full bg-rose px-8 py-4 font-body text-base text-paper transition-colors hover:bg-[#a83a5c] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose aria-disabled:pointer-events-none aria-disabled:opacity-50"
-                >
-                  <span>Enviar no WhatsApp</span>
-                  <PaperPlaneIcon
-                    aria-hidden="true"
-                    className="h-7 w-7 shrink-0 -translate-x-4 opacity-0 transition-all duration-[400ms] ease-out group-hover:translate-x-0 group-hover:opacity-100"
-                  />
-                </a>
-              </div>
+              </a>
 
               <div className="mt-4 flex w-full gap-3">
                 {SOCIAL_LINKS.map((social) => {
