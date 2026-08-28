@@ -104,7 +104,7 @@ export function Contact() {
             </ul>
 
             <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
-              <label className="flex flex-col gap-1 text-left">
+              <label className="flex min-w-0 flex-col gap-1 text-left">
                 <span className="font-body text-xs uppercase tracking-[0.2em] text-rose-soft">
                   Tipo de evento
                 </span>
@@ -112,7 +112,7 @@ export function Contact() {
                   id="event-type"
                   value={eventType}
                   onChange={(event) => setEventType(event.target.value)}
-                  className="w-full rounded-md border-2 border-rose-soft bg-blush/60 p-3 font-body text-sm text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose"
+                  className="w-full min-w-0 rounded-md border-2 border-rose-soft bg-blush/60 p-3 font-body text-sm text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose"
                 >
                   <option value="">Selecione</option>
                   <option value="Casamento">Casamento</option>
@@ -122,7 +122,7 @@ export function Contact() {
                   <option value="Outro">Outro</option>
                 </select>
               </label>
-              <label className="flex flex-col gap-1 text-left">
+              <label className="flex min-w-0 flex-col gap-1 text-left">
                 <span className="font-body text-xs uppercase tracking-[0.2em] text-rose-soft">
                   Data do evento
                 </span>
@@ -131,7 +131,7 @@ export function Contact() {
                   type="date"
                   value={eventDate}
                   onChange={(event) => setEventDate(event.target.value)}
-                  className="w-full rounded-md border-2 border-rose-soft bg-blush/60 p-3 font-body text-sm text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose"
+                  className="w-full min-w-0 rounded-md border-2 border-rose-soft bg-blush/60 p-3 font-body text-sm text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose"
                 />
               </label>
             </div>
