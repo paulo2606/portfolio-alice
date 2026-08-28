@@ -21,7 +21,7 @@ const SERVICE_CARDS = [
     title: "Edição em tempo real",
     description:
       "Seu vídeo editado e pronto em tempo real para postar enquanto o evento acontece, com o clima e a energia do momento intactos.",
-    video: "/video/projects/casamento-cha-de-panela/casamento-cha-de-panela-2.mp4",
+    video: "/video/projects/eventos/eventos-1.mp4",
   },
   {
     title: "Momentos espontâneos",
