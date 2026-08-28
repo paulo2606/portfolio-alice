@@ -12,22 +12,22 @@ import { VideoModal } from "./VideoModal";
 
 const SERVICE_CARDS = [
   {
-    title: "Stories estratégicos",
+    title: "Cobertura de eventos",
     description:
-      "Atenção aos mínimos detalhes, captando momentos únicos que fazem toda a diferença.",
-    video: "/video/hero_trimmed.mp4",
+      "Do início ao fim da celebração, registrando os momentos que fazem a festa ser única, sem perder nenhum detalhe.",
+    video: "/video/projects/festa-15/festa-15-3.mp4",
   },
   {
     title: "Edição em tempo real",
     description:
       "Seu vídeo editado e pronto em tempo real para postar enquanto o evento acontece, com o clima e a energia do momento intactos.",
-    video: "/video/hero.mp4",
+    video: "/video/projects/casamento-cha-de-panela/casamento-cha-de-panela-2.mp4",
   },
   {
-    title: "Trends do momento",
+    title: "Momentos espontâneos",
     description:
-      "Criação de conteúdos baseados em trends do momento (TikTok, Reels, etc.)",
-    video: "/video/hero_trimmed.mp4",
+      "Registro natural e sem poses forçadas, capturando reações e afetos reais de quem está ali.",
+    video: "/video/projects/aniversarios/aniversarios-5.mp4",
   },
 ];
 
