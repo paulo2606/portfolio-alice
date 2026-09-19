@@ -1,6 +1,7 @@
 export interface ProjectVideo {
   src: string;
   poster: string;
+  mobileSrc?: string;
 }
 
 export interface Project {
@@ -19,6 +20,8 @@ function videos(slug: string, count: number): ProjectVideo[] {
     return {
       src: `/video/projects/${slug}/${name}.mp4`,
       poster: `/video/projects/${slug}/${name}-poster.jpg`,
+      // capas do mosaico (indices 0 e 1) tem uma versao leve, cortada e sem audio, para celular
+      ...(i < 2 ? { mobileSrc: `/video/projects/${slug}/${name}-mobile.mp4` } : {}),
     };
   });
 }

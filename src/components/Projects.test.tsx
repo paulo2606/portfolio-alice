@@ -38,18 +38,21 @@ describe("Projects", () => {
     ).toHaveLength(2);
   });
 
-  it("cada card usa video com poster, tocando automaticamente e mudo", () => {
+  it("cada card usa video com poster, mudo, com fonte desktop e uma fonte leve para mobile", () => {
     render(<Projects />);
     const [firstCard] = within(getDesktopMosaic()).getAllByRole("button", {
       name: /ver projeto: festa de 15 anos/i,
     });
     const video = firstCard.querySelector("video");
     expect(video).not.toBeNull();
-    expect(video).toHaveAttribute("src", "/video/projects/festa-15/festa-15-1.mp4");
     expect(video).toHaveAttribute("poster", "/video/projects/festa-15/festa-15-1-poster.jpg");
-    expect(video).toHaveAttribute("autoplay");
     expect(video).toHaveProperty("muted", true);
     expect(video).toHaveAttribute("preload", "metadata");
+
+    const sources = video!.querySelectorAll("source");
+    expect(sources[0]).toHaveAttribute("src", "/video/projects/festa-15/festa-15-1-mobile.mp4");
+    expect(sources[0]).toHaveAttribute("media", "(max-width: 767px)");
+    expect(sources[1]).toHaveAttribute("src", "/video/projects/festa-15/festa-15-1.mp4");
   });
 
   it("reinicia o video do card ao atingir 5 segundos, sem baixar o arquivo inteiro", () => {

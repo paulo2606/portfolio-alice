@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { PROJECTS, type Project, type ProjectVideo } from "@/lib/projects";
 import { ProjectSidebar } from "./ProjectSidebar";
 import { Reveal } from "./Reveal";
@@ -55,6 +55,74 @@ const MOBILE_MOSAIC = MOSAIC.filter((tile) => tile.mobileArea);
 
 const COVER_LOOP_SECONDS = 5;
 
+function loopCoverEarly(event: React.SyntheticEvent<HTMLVideoElement>) {
+  const video = event.currentTarget;
+  if (video.currentTime >= COVER_LOOP_SECONDS) {
+    video.currentTime = 0;
+  }
+}
+
+interface MosaicTileButtonProps {
+  tile: MosaicTile;
+  area: string;
+  onOpen: (event: React.MouseEvent<HTMLButtonElement>, tile: MosaicTile) => void;
+}
+
+function MosaicTileButton({ tile, area, onOpen }: MosaicTileButtonProps) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const cover = tile.project.videos[tile.coverIndex];
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          video.play().catch(() => {});
+        } else {
+          video.pause();
+        }
+      },
+      { threshold: 0.25 }
+    );
+    observer.observe(video);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <button
+      type="button"
+      onClick={(event) => onOpen(event, tile)}
+      aria-label={`Ver projeto: ${tile.project.name}`}
+      className={`group relative cursor-pointer overflow-hidden rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose ${area}`}
+    >
+      <video
+        ref={videoRef}
+        poster={cover.poster}
+        onTimeUpdate={loopCoverEarly}
+        muted
+        playsInline
+        preload="metadata"
+        className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+      >
+        {cover.mobileSrc && <source src={cover.mobileSrc} media="(max-width: 767px)" />}
+        <source src={cover.src} />
+      </video>
+      <div className="absolute inset-0 flex items-center justify-center bg-ink/50 p-3 min-[1080px]:hidden">
+        <span className="px-2 text-center font-display text-base italic text-paper">
+          {tile.project.name}
+        </span>
+      </div>
+      <div className="absolute inset-0 hidden items-center justify-center bg-ink/0 opacity-0 transition-all duration-300 ease-out group-hover:bg-ink/60 group-hover:opacity-100 min-[1080px]:flex">
+        <span className="px-4 text-center font-display text-2xl italic text-paper">
+          {tile.project.name}
+        </span>
+      </div>
+    </button>
+  );
+}
+
 export function Projects() {
   const [openProject, setOpenProject] = useState<{ project: Project; initialIndex: number } | null>(
     null
@@ -86,44 +154,14 @@ export function Projects() {
     triggerRef.current?.focus();
   }
 
-  function loopCoverEarly(event: React.SyntheticEvent<HTMLVideoElement>) {
-    const video = event.currentTarget;
-    if (video.currentTime >= COVER_LOOP_SECONDS) {
-      video.currentTime = 0;
-    }
-  }
-
   function renderTile(tile: MosaicTile, area: string) {
-    const cover = tile.project.videos[tile.coverIndex];
     return (
-      <button
-        key={`${tile.project.slug}-${tile.coverIndex}`}
-        type="button"
-        onClick={(event) => handleOpen(event, tile)}
-        aria-label={`Ver projeto: ${tile.project.name}`}
-        className={`group relative cursor-pointer overflow-hidden rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose ${area}`}
-      >
-        <video
-          src={cover.src}
-          poster={cover.poster}
-          onTimeUpdate={loopCoverEarly}
-          autoPlay
-          muted
-          playsInline
-          preload="metadata"
-          className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-        />
-        <div className="absolute inset-0 flex items-center justify-center bg-ink/50 p-3 min-[1080px]:hidden">
-          <span className="px-2 text-center font-display text-base italic text-paper">
-            {tile.project.name}
-          </span>
-        </div>
-        <div className="absolute inset-0 hidden items-center justify-center bg-ink/0 opacity-0 transition-all duration-300 ease-out group-hover:bg-ink/60 group-hover:opacity-100 min-[1080px]:flex">
-          <span className="px-4 text-center font-display text-2xl italic text-paper">
-            {tile.project.name}
-          </span>
-        </div>
-      </button>
+      <MosaicTileButton
+        key={`${tile.project.slug}-${tile.coverIndex}-${area}`}
+        tile={tile}
+        area={area}
+        onOpen={handleOpen}
+      />
     );
   }
 
